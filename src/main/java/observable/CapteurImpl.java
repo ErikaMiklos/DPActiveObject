@@ -1,18 +1,17 @@
 package observable;
 
-import observable.Capteur;
 import observers.Observer;
-import proxy.Canal;
-import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Thread;
 
-public class CapteurImpl implements Capteur {
+public class CapteurImpl extends Thread implements Capteur {
     private int value;
     private List<Observer> observers = new ArrayList<>();
+
+    private DiffusionAtomique diffusionAtomique = new DiffusionAtomique();
 
 
     @Override
@@ -26,6 +25,7 @@ public class CapteurImpl implements Capteur {
     }
 
     public void update() {
+        this.value = diffusionAtomique.getValue();
         for(Observer o: observers){
             //Technique pop
             o.update(this);
@@ -39,10 +39,22 @@ public class CapteurImpl implements Capteur {
 
     @Override
     public void tick() {
-        this.value++;
+        diffusionAtomique.execute();
+        //this.value++;
         update();
         System.out.println("CapteurImpl Current value: " + this.value);
     }
-
+    @Override
+    public void run() {
+        try {
+            for (int i=0; i<5; i++) {
+                tick();
+                Thread.sleep(300);
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 }
