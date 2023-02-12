@@ -2,6 +2,7 @@ package observable;
 
 import observable.Capteur;
 import observers.Observer;
+import proxy.Canal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,8 @@ public class CapteurImpl extends Thread implements Capteur {
         observers.remove(observer);
     }
 
-    public void notifyObservers() {
-        for(Observer o:observers){
+    public void update() {
+        for(Observer o: observers){
             //Technique pop
             o.update(this);
         }
@@ -36,7 +37,7 @@ public class CapteurImpl extends Thread implements Capteur {
     @Override
     public void tick() {
         this.value++;
-        notifyObservers();
+        update();
     }
 
     @Override

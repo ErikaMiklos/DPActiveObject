@@ -1,41 +1,48 @@
 package proxy;
 
 import async.CapteurAsync;
+import observable.Capteur;
+import observable.CapteurImpl;
+import observers.Afficheur;
+import observers.Observer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Canal implements CapteurAsync {
+public class Canal implements Capteur,Observer {
+
+    private int value;
+    private List<Observer> observers = new ArrayList<>();
+    private Capteur capteur = new CapteurImpl();
+    private Afficheur afficheur = new Afficheur();
+
 
     @Override
-    public Future<Integer> getValue() {
-        return null;
+    public void attache(Observer observer) {
+        capteur.attache(observer);
     }
 
     @Override
-    public boolean cancel(boolean mayInterruptIfRunning) {
-        return false;
+    public void detache(Observer observer) {
+        capteur.detache(observer);
     }
 
     @Override
-    public boolean isCancelled() {
-        return false;
+    public int getValue() {
+        return capteur.getValue();
     }
 
     @Override
-    public boolean isDone() {
-        return false;
+    public void tick() {
+        capteur.tick();
     }
 
     @Override
-    public Object get() throws InterruptedException, ExecutionException {
-        return null;
-    }
-
-    @Override
-    public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        return null;
+    public void update(Capteur capteur) {
+        afficheur.update(capteur);
     }
 }
