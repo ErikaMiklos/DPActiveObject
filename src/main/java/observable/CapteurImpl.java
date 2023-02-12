@@ -3,14 +3,17 @@ package observable;
 import observable.Capteur;
 import observers.Observer;
 import proxy.Canal;
+import strategy.AlgoDiffusion;
+import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Thread;
 
-public class CapteurImpl extends Thread implements Capteur {
+public class CapteurImpl implements Capteur {
     private int value;
     private List<Observer> observers = new ArrayList<>();
+
 
     @Override
     public void attache(Observer observer) {
@@ -38,19 +41,8 @@ public class CapteurImpl extends Thread implements Capteur {
     public void tick() {
         this.value++;
         update();
+        System.out.println("CapteurImpl Current value: " + this.value);
     }
 
-    @Override
-    public void run() {
-        try {
-            for (int i=0; i<5; i++) {
-                tick();
-                Thread.sleep(300);
-                System.out.println("CapteurImpl: value actuel: " + this.value);
-            }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+
 }
