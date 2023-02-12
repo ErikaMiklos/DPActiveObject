@@ -13,13 +13,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Canal implements Capteur,Observer {
+public class Canal extends Thread implements Capteur,Observer {
 
-    private int value;
     private List<Observer> observers = new ArrayList<>();
-    private Capteur capteur = new CapteurImpl();
-    private Afficheur afficheur = new Afficheur();
+    private Capteur capteur;
+    private Observer observer = new Afficheur();
 
+    public Canal( Capteur capteur) {
+        this.capteur = capteur;
+    }
 
     @Override
     public void attache(Observer observer) {
@@ -43,6 +45,8 @@ public class Canal implements Capteur,Observer {
 
     @Override
     public void update(Capteur capteur) {
-        afficheur.update(capteur);
+        observer.update(capteur);
     }
+
+
 }
