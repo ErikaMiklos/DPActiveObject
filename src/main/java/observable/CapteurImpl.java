@@ -1,18 +1,32 @@
 package observable;
 
 import observers.Observer;
+import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.lang.Thread;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CapteurImpl extends Thread implements Capteur {
     private int value;
+    private BlockingQueue<Integer> input;
+    private BlockingQueue<Integer> output;
+    private ExecutorService pool;
     private List<Observer> observers = new ArrayList<>();
+    private AlgoDiffusion diffusionAtomique;
 
-    private DiffusionAtomique diffusionAtomique = new DiffusionAtomique();
-
+    public CapteurImpl(BlockingQueue<Integer> input, BlockingQueue<Integer> output, AlgoDiffusion diffusionAtomique)  {
+        this.input = input;
+        this.output = output;
+        this.diffusionAtomique = diffusionAtomique;
+        diffusionAtomique.configure(input, output);
+        Executors.newFixedThreadPool(10);
+    }
 
     @Override
     public void attache(Observer observer) {
@@ -25,7 +39,6 @@ public class CapteurImpl extends Thread implements Capteur {
     }
 
     public void update() {
-        this.value = diffusionAtomique.getValue();
         for(Observer o: observers){
             //Technique pop
             o.update(this);
@@ -38,23 +51,13 @@ public class CapteurImpl extends Thread implements Capteur {
     }
 
     @Override
-    public void tick() {
+    public void tick() throws InterruptedException{
+
         diffusionAtomique.execute();
-        //this.value++;
+        this.value = input.take();
         update();
         System.out.println("CapteurImpl Current value: " + this.value);
     }
-    @Override
-    public void run() {
-        try {
-            for (int i=0; i<5; i++) {
-                tick();
-                Thread.sleep(300);
-            }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+
 
 }

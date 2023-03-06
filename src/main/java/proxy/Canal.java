@@ -3,6 +3,8 @@ package proxy;
 import observable.Capteur;
 import observers.Afficheur;
 import observers.Observer;
+import strategy.AlgoDiffusion;
+import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class Canal extends Thread implements Capteur,Observer {
     }
 
     @Override
-    public void tick() {
+    public void tick() throws InterruptedException {
         capteur.tick();
     }
 
