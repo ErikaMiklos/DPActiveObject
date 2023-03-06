@@ -20,7 +20,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
     @Override
     public void execute() throws InterruptedException{
         input.put(++value);
-        System.out.println("input ertek " + this.value);
+        System.out.println("input value " + input.peek());
     }
 
 
