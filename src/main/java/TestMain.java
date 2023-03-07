@@ -14,8 +14,8 @@ public class TestMain {
         BlockingQueue<Integer> input = new ArrayBlockingQueue<>(1);
         BlockingQueue<Integer> output = new ArrayBlockingQueue<>(1);
 
-        Executor scheduler = Executors.newFixedThreadPool(1);
-        ScheduledExecutorService scheduledExecutorService= Executors.newScheduledThreadPool(1);
+        //Executor scheduler = Executors.newFixedThreadPool(1);
+        ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
         AlgoDiffusion algo = new DiffusionAtomique();
 
@@ -26,12 +26,11 @@ public class TestMain {
 
 
         //List<Canal> canals = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 1; i < 5; i++) {
             Canal canal = new Canal(capteur);
-            //new Thread(canal).start();
-            //Afficheur afficheur = new Afficheur();
-            //afficheur.setId(i);
-            //canal.attache(afficheur);
+            Afficheur afficheur = new Afficheur();
+            afficheur.setId(i);
+            canal.attache(afficheur);
             //canals.add(canal);
         }
 
@@ -49,8 +48,20 @@ public class TestMain {
             }
         });*/
 
+        Runnable task = () -> {
+            for (int i = 0; i < 5; i++) {
+                try {
+                    capteur.tick();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
 
-        scheduler.execute( () -> {
+        scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.shutdown();
+
+        /*scheduler.execute( () -> {
             for (int i = 0; i < 5; i++) {
                 try {
                     //scheduledExecutorService.schedule(capteur.tick(), 500, TimeUnit.MILLISECONDS);
@@ -59,7 +70,7 @@ public class TestMain {
                     throw new RuntimeException(e);
                 }
             }
-        });
+        });*/
 
 
 

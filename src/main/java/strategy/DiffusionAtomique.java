@@ -3,7 +3,7 @@ package strategy;
 
 import java.util.concurrent.BlockingQueue;
 
-public class DiffusionAtomique implements AlgoDiffusion, Runnable {
+public class DiffusionAtomique implements AlgoDiffusion {
 
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
@@ -20,18 +20,6 @@ public class DiffusionAtomique implements AlgoDiffusion, Runnable {
     @Override
     public void execute() throws InterruptedException{
         input.put(++value);
-        System.out.println("input value " + input.peek());
-    }
-
-    @Override
-    public void run() {
-        while(value < 5){
-            try {
-                Thread.sleep(100);
-                execute();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println("valeur écriture " + input.peek());
     }
 }

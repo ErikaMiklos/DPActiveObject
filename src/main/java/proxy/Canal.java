@@ -6,18 +6,24 @@ import observers.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Canal extends Thread implements Capteur,Observer {
 
     private List<Observer> observers = new ArrayList<>();
     private Capteur capteur;
     private Observer observer;
+    private ScheduledExecutorService scheduledExecutorService;
 
-    public Canal( Capteur capteur) {
+    public Canal(Capteur capteur) {
         this.capteur = capteur;
-        this.observer = new Afficheur();
-        capteur.attache(observer);
+        //this.observer = new Afficheur();
+        //capteur.attache(observer);
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override
@@ -41,8 +47,17 @@ public class Canal extends Thread implements Capteur,Observer {
     }
 
     @Override
-    public void update(Capteur capteur) throws ExecutionException, InterruptedException {
-        observer.update(capteur);
+    public void update(Capteur capteur) {
+        Runnable task = () -> {
+            try {
+                observer.update(capteur);
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        scheduledExecutorService.schedule(task,new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.shutdown();
+        //observer.update(capteur);
     }
 
 

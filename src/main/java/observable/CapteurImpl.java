@@ -9,7 +9,7 @@ import java.lang.Thread;
 import java.util.Random;
 import java.util.concurrent.*;
 
-public class CapteurImpl extends Thread implements Capteur,Runnable {
+public class CapteurImpl extends Thread implements Capteur {
     private int value;
     private ScheduledFuture<Integer> sFutureValue;
     private BlockingQueue<Integer> input;
@@ -23,7 +23,7 @@ public class CapteurImpl extends Thread implements Capteur,Runnable {
         this.output = output;
         this.diffusionAtomique = diffusionAtomique;
         diffusionAtomique.configure(input, output);
-        this.service = Executors.newScheduledThreadPool(2);
+        this.service = Executors.newScheduledThreadPool(4);
     }
 
     @Override
@@ -37,38 +37,26 @@ public class CapteurImpl extends Thread implements Capteur,Runnable {
     }
 
     public void update() throws ExecutionException, InterruptedException {
-        for(Observer o: observers){
-            //service.schedule(o.update(this),2,TimeUnit.SECONDS);
-            //Technique pop
+        //Technique pop
+        for(Observer o: observers) {
             o.update(this);
         }
     }
 
     @Override
     public int getValue() throws ExecutionException, InterruptedException {
-        return this.sFutureValue.get();
+        //return this.sFutureValue.get();
+        return  this.value;
     }
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
 
         diffusionAtomique.execute();
-        this.sFutureValue = service.schedule(() -> input.take(), new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
-        //this.value = input.take();
+        //this.sFutureValue = service.schedule(() -> input.take(), new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
+        this.value = input.take();
         update();
-        System.out.println("CapteurImpl Current value: " + this.getValue());
-    }
-
-    @Override
-    public void run() {
-        while(value < 5){
-            try {
-                Thread.sleep(10);
-                tick();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println("valeur lecture: " + this.getValue());
     }
 
 
