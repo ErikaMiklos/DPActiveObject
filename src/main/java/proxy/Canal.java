@@ -3,11 +3,10 @@ package proxy;
 import observable.Capteur;
 import observers.Afficheur;
 import observers.Observer;
-import strategy.AlgoDiffusion;
-import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Canal extends Thread implements Capteur,Observer {
 
@@ -32,17 +31,17 @@ public class Canal extends Thread implements Capteur,Observer {
     }
 
     @Override
-    public int getValue() {
+    public int getValue() throws ExecutionException, InterruptedException {
         return capteur.getValue();
     }
 
     @Override
-    public void tick() throws InterruptedException {
+    public void tick() throws InterruptedException, ExecutionException {
         capteur.tick();
     }
 
     @Override
-    public void update(Capteur capteur) {
+    public void update(Capteur capteur) throws ExecutionException, InterruptedException {
         observer.update(capteur);
     }
 

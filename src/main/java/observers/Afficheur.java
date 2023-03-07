@@ -4,6 +4,7 @@ import observable.Capteur;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Afficheur implements Observer {
 
@@ -16,7 +17,7 @@ public class Afficheur implements Observer {
     }
 
     @Override
-    public void update(Capteur capteur) {
+    public void update(Capteur capteur) throws ExecutionException, InterruptedException {
         afficheListe.add(capteur.getValue());
 
         if(capteur.getValue()==5){

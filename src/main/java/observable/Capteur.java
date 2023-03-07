@@ -1,15 +1,12 @@
 package observable;
 
 import observers.Observer;
-import proxy.Canal;
-import strategy.AlgoDiffusion;
-import strategy.DiffusionAtomique;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 
 public interface Capteur {
     void attache(Observer observer);
     void detache(Observer observer);
-    int getValue();
-    void tick() throws InterruptedException;
+    int getValue() throws ExecutionException, InterruptedException;
+    void tick() throws InterruptedException, ExecutionException;
 }

@@ -27,7 +27,7 @@ public class DiffusionAtomique implements AlgoDiffusion, Runnable {
     public void run() {
         while(value < 5){
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
                 execute();
             } catch (InterruptedException e) {
                 e.printStackTrace();

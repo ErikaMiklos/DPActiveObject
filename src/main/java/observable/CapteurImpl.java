@@ -2,21 +2,19 @@ package observable;
 
 import observers.Observer;
 import strategy.AlgoDiffusion;
-import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.lang.Thread;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Random;
+import java.util.concurrent.*;
 
 public class CapteurImpl extends Thread implements Capteur,Runnable {
     private int value;
+    private ScheduledFuture<Integer> sFutureValue;
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
-    private ExecutorService pool;
+    private ScheduledExecutorService service;
     private List<Observer> observers = new ArrayList<>();
     private AlgoDiffusion diffusionAtomique;
 
@@ -25,7 +23,7 @@ public class CapteurImpl extends Thread implements Capteur,Runnable {
         this.output = output;
         this.diffusionAtomique = diffusionAtomique;
         diffusionAtomique.configure(input, output);
-        Executors.newFixedThreadPool(10);
+        this.service = Executors.newScheduledThreadPool(2);
     }
 
     @Override
@@ -38,24 +36,27 @@ public class CapteurImpl extends Thread implements Capteur,Runnable {
         observers.remove(observer);
     }
 
-    public void update() {
+    public void update() throws ExecutionException, InterruptedException {
         for(Observer o: observers){
+            //service.schedule(o.update(this),2,TimeUnit.SECONDS);
             //Technique pop
             o.update(this);
         }
     }
 
     @Override
-    public int getValue() {
-        return this.value;
+    public int getValue() throws ExecutionException, InterruptedException {
+        return this.sFutureValue.get();
     }
 
     @Override
-    public void tick() throws InterruptedException{
-        //diffusionAtomique.execute();
-        this.value = input.take();
+    public void tick() throws InterruptedException, ExecutionException {
+
+        diffusionAtomique.execute();
+        this.sFutureValue = service.schedule(() -> input.take(), new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
+        //this.value = input.take();
         update();
-        System.out.println("CapteurImpl Current value: " + this.value);
+        System.out.println("CapteurImpl Current value: " + this.getValue());
     }
 
     @Override
@@ -64,7 +65,7 @@ public class CapteurImpl extends Thread implements Capteur,Runnable {
             try {
                 Thread.sleep(10);
                 tick();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

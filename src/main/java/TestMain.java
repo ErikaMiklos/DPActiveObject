@@ -6,25 +6,23 @@ import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class TestMain {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
 
         BlockingQueue<Integer> input = new ArrayBlockingQueue<>(1);
         BlockingQueue<Integer> output = new ArrayBlockingQueue<>(1);
 
         Executor scheduler = Executors.newFixedThreadPool(1);
+        ScheduledExecutorService scheduledExecutorService= Executors.newScheduledThreadPool(1);
 
         AlgoDiffusion algo = new DiffusionAtomique();
 
         CapteurImpl capteur = new CapteurImpl(input, output, algo);
 
-        new Thread((Runnable) algo).start();
-        new Thread(capteur).start();
+        //new Thread((Runnable) algo).start();
+        //new Thread(capteur).start();
 
 
         //List<Canal> canals = new ArrayList<>();
@@ -44,15 +42,24 @@ public class TestMain {
         }*/
 
         /*scheduler.execute( () -> {
+            try {
+                capteur.tick();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });*/
+
+
+        scheduler.execute( () -> {
             for (int i = 0; i < 5; i++) {
                 try {
+                    //scheduledExecutorService.schedule(capteur.tick(), 500, TimeUnit.MILLISECONDS);
                     capteur.tick();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             }
-
-        });*/
+        });
 
 
 
