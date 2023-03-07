@@ -23,19 +23,27 @@ public class TestMain {
 
         CapteurImpl capteur = new CapteurImpl(input, output, algo);
 
-        List<Canal> canals = new ArrayList<>();
+        new Thread((Runnable) algo).start();
+        new Thread(capteur).start();
+
+
+        //List<Canal> canals = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Canal canal = new Canal(capteur);
-            canals.add(canal);
+            //new Thread(canal).start();
+            //Afficheur afficheur = new Afficheur();
+            //afficheur.setId(i);
+            //canal.attache(afficheur);
+            //canals.add(canal);
         }
 
-        for (int i = 0; i < 4; i++) {
+        /*for (int i = 0; i < 4; i++) {
             Afficheur afficheur = new Afficheur();
             afficheur.setId(i);
             canals.get(i).attache(afficheur);
-        }
+        }*/
 
-        scheduler.execute( () -> {
+        /*scheduler.execute( () -> {
             for (int i = 0; i < 5; i++) {
                 try {
                     capteur.tick();
@@ -44,7 +52,7 @@ public class TestMain {
                 }
             }
 
-        });
+        });*/
 
 
 

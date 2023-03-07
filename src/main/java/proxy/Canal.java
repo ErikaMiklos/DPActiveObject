@@ -13,10 +13,12 @@ public class Canal extends Thread implements Capteur,Observer {
 
     private List<Observer> observers = new ArrayList<>();
     private Capteur capteur;
-    private Observer observer = new Afficheur();
+    private Observer observer;
 
     public Canal( Capteur capteur) {
         this.capteur = capteur;
+        this.observer = new Afficheur();
+        capteur.attache(observer);
     }
 
     @Override

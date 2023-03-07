@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CapteurImpl extends Thread implements Capteur {
+public class CapteurImpl extends Thread implements Capteur,Runnable {
     private int value;
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
@@ -52,11 +52,22 @@ public class CapteurImpl extends Thread implements Capteur {
 
     @Override
     public void tick() throws InterruptedException{
-
-        diffusionAtomique.execute();
+        //diffusionAtomique.execute();
         this.value = input.take();
         update();
         System.out.println("CapteurImpl Current value: " + this.value);
+    }
+
+    @Override
+    public void run() {
+        while(value < 5){
+            try {
+                Thread.sleep(10);
+                tick();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

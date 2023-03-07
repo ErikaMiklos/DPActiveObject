@@ -8,6 +8,7 @@ import java.util.List;
 public class Afficheur implements Observer {
 
     private int id;
+
     private List<Integer> afficheListe = new ArrayList<>();
 
     public void setId(int id) {
