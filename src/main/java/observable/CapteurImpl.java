@@ -6,7 +6,6 @@ import strategy.AlgoDiffusion;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Thread;
-import java.util.Random;
 import java.util.concurrent.*;
 
 public class CapteurImpl extends Thread implements Capteur {

@@ -1,7 +1,6 @@
 package proxy;
 
 import observable.Capteur;
-import observers.Afficheur;
 import observers.Observer;
 
 import java.util.ArrayList;
