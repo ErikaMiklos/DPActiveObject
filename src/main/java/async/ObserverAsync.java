@@ -3,7 +3,8 @@ package async;
 import observable.Capteur;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public interface ObserverAsync {
-    void update(Capteur capteur);
+    Future<?> update(Capteur capteur);
 }
