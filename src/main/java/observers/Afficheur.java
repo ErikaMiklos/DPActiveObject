@@ -1,20 +1,25 @@
 package observers;
 
-import observable.Capteur;
+import org.jetbrains.annotations.NotNull;
 import proxy.Canal;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 public class Afficheur implements Observer {
-    private List<Integer> afficheListe = new ArrayList<>();
+    private final List<Integer> afficheListe = new ArrayList<>();
 
     @Override
-    public void update(Canal canal) throws ExecutionException, InterruptedException {
-        afficheListe.add(canal.getValue().get());
+    public void update(@NotNull Canal canal) throws ExecutionException, InterruptedException {
+        Future<Integer> futureValue = canal.getValue();
+        Integer updatedValue = futureValue.get();
+        afficheListe.add(updatedValue);
 
-        if(canal.getValue().get()==5){
+        if(updatedValue==5){
+            Logger.getGlobal().info("Réussi à récupérer la valeur actuelle");
             System.out.println("Afficheur id " + this.hashCode() + " : Liste des valeurs récupérées: " + afficheListe);
         }
     }

@@ -1,6 +1,7 @@
 package observable;
 
 import observers.Observer;
+import proxy.Canal;
 import strategy.AlgoDiffusion;
 
 import java.util.ArrayList;
@@ -8,9 +9,8 @@ import java.util.List;
 import java.lang.Thread;
 import java.util.concurrent.*;
 
-public class CapteurImpl extends Thread implements Capteur {
+public class CapteurImpl implements Capteur {
     private int value;
-    private ScheduledFuture<Integer> sFutureValue;
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
     private ScheduledExecutorService service;
@@ -36,27 +36,22 @@ public class CapteurImpl extends Thread implements Capteur {
         observers.remove(observer);
     }
 
-    /*public void update() throws ExecutionException, InterruptedException {
-        //Technique pop
-        for(Observer o: observers) {
-            o.update(this);
-        }
-    }*/
-
     @Override
-    public int getValue() throws ExecutionException, InterruptedException {
-        //return this.sFutureValue.get();
+    public int getValue() throws InterruptedException {
+        //unlock
+        this.value = input.take();
+        //System.out.println("valeur lecture: " + this.getValue());
         return  this.value;
     }
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
-
+        //lock
         diffusionAtomique.execute();
-        //this.sFutureValue = service.schedule(() -> input.take(), new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
-        this.value = input.take();
-        //update();
-        System.out.println("valeur lecture: " + this.getValue());
+        for(Observer o: observers) {
+            o.update(new Canal(this));
+        }
+
     }
 
 

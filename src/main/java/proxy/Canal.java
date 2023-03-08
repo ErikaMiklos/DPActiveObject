@@ -42,7 +42,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }
-        scheduler.shutdown();
+        //scheduler.shutdown();
 
         return result;
     }
@@ -59,7 +59,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         };
         /*Future<?> schedule = scheduler.schedule(task,
                 new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);*/
-        executor.shutdown();
+        //executor.shutdown();
 
         return executor.submit(task);
     }
