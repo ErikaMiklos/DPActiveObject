@@ -1,9 +1,10 @@
 package observers;
 
 import observable.Capteur;
+import proxy.Canal;
 
 import java.util.concurrent.ExecutionException;
 
 public interface Observer {
-    void update(Capteur capteur) throws ExecutionException, InterruptedException;
+    void update(Canal canal) throws ExecutionException, InterruptedException ;
 }

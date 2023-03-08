@@ -36,12 +36,12 @@ public class CapteurImpl extends Thread implements Capteur {
         observers.remove(observer);
     }
 
-    public void update() throws ExecutionException, InterruptedException {
+    /*public void update() throws ExecutionException, InterruptedException {
         //Technique pop
         for(Observer o: observers) {
             o.update(this);
         }
-    }
+    }*/
 
     @Override
     public int getValue() throws ExecutionException, InterruptedException {
@@ -55,7 +55,7 @@ public class CapteurImpl extends Thread implements Capteur {
         diffusionAtomique.execute();
         //this.sFutureValue = service.schedule(() -> input.take(), new Random().nextInt(1000)+500, TimeUnit.MILLISECONDS);
         this.value = input.take();
-        update();
+        //update();
         System.out.println("valeur lecture: " + this.getValue());
     }
 

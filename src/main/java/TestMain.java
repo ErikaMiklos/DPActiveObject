@@ -18,10 +18,7 @@ public class TestMain {
         CapteurImpl capteur = new CapteurImpl(input, output, algo);
 
         for (int i = 1; i < 5; i++) {
-            Canal canal = new Canal(capteur);
-            Afficheur afficheur = new Afficheur();
-            afficheur.setId(i);
-            canal.attache(afficheur);
+            new Canal(capteur);
             //capteur.attache(canal);
         }
 

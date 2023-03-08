@@ -1,47 +1,37 @@
 package proxy;
 
+import async.CapteurAsync;
 import observable.Capteur;
+import observers.Afficheur;
 import observers.Observer;
+import async.ObserverAsync;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
 
-public class Canal extends Thread implements Capteur,Observer {
+public class Canal implements ObserverAsync,CapteurAsync {
 
-    private List<Observer> observers = new ArrayList<>();
-    private Capteur capteur;
-    private Observer observer;
+    private Capteur capteurImpl;
+    private Observer afficheur;
     private ScheduledExecutorService scheduledExecutorService;
     private ScheduledExecutorService futureExecutorService;
 
     public Canal(Capteur capteur) {
-        this.capteur = capteur;
-        //this.observer = new Afficheur();
-        //capteur.attache(observer);
+        capteurImpl = capteur;
+        this.afficheur = new Afficheur();
+        capteur.attache(afficheur);
         this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.futureExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override
-    public void attache(Observer observer) {
-        capteur.attache(observer);
-    }
-
-    @Override
-    public void detache(Observer observer) {
-        capteur.detache(observer);
-    }
-
-    @Override
-    public int getValue() throws ExecutionException, InterruptedException {
+    public Future<Integer> getValue(){
         Callable<Integer> ctask = new Callable<Integer>() {
             public Integer call() throws ExecutionException, InterruptedException {
-                return capteur.getValue();
+                return capteurImpl.getValue();
             }
         };
-        Future<Integer> result = futureExecutorService.schedule(ctask, 1, TimeUnit.SECONDS);
+        Future<Integer> result = futureExecutorService.schedule(ctask, 500, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
             System.out.println("value = " + value);
@@ -50,28 +40,21 @@ public class Canal extends Thread implements Capteur,Observer {
         }
         futureExecutorService.shutdown();
 
-        return result.get();
-        //return capteur.getValue();
+        return result;
     }
 
     @Override
-    public void tick() throws InterruptedException, ExecutionException {
-        capteur.tick();
-    }
-
-    @Override
-    public void update(Capteur capteur) {
+    public void update(Capteur capteur){
         Runnable rtask = () -> {
             try {
-                observer.update(capteur);
-                System.out.println("observer updated");
+                afficheur.update(this);
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            System.out.println("observer updated");
         };
         scheduledExecutorService.schedule(rtask, new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
         scheduledExecutorService.shutdown();
-        //observer.update(capteur);
     }
 
 

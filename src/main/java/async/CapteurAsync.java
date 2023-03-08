@@ -2,6 +2,6 @@ package async;
 
 import java.util.concurrent.Future;
 
-public interface CapteurAsync extends Future {
+public interface CapteurAsync {
     Future<Integer> getValue();
 }
