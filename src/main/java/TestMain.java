@@ -3,6 +3,8 @@ import observers.Afficheur;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
+
+import java.util.ArrayList;
 import java.util.concurrent.*;
 
 public class TestMain {
@@ -20,6 +22,7 @@ public class TestMain {
             Afficheur afficheur = new Afficheur();
             afficheur.setId(i);
             canal.attache(afficheur);
+            //capteur.attache(canal);
         }
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();

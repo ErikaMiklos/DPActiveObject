@@ -14,7 +14,7 @@ public class CapteurImpl extends Thread implements Capteur {
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
     private ScheduledExecutorService service;
-    private List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers;
     private AlgoDiffusion diffusionAtomique;
 
     public CapteurImpl(BlockingQueue<Integer> input, BlockingQueue<Integer> output, AlgoDiffusion diffusionAtomique)  {
@@ -22,6 +22,7 @@ public class CapteurImpl extends Thread implements Capteur {
         this.output = output;
         this.diffusionAtomique = diffusionAtomique;
         diffusionAtomique.configure(input, output);
+        this.observers = new ArrayList<>();
         this.service = Executors.newScheduledThreadPool(4);
     }
 
