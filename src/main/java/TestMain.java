@@ -39,9 +39,6 @@ public class TestMain {
                 if(capteur.getValue()<5){
                     capteur.tick();
                 }
-                else{
-                    scheduler.shutdown();
-                }
 
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
@@ -49,9 +46,10 @@ public class TestMain {
         };
 
         //scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
+        Future<?> f = scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
 
-
-        scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
+        Runnable cancelTask = () -> f.cancel(true);
+        scheduler.schedule(cancelTask, 2500, TimeUnit.MILLISECONDS);
 
         scheduledExecutorService.shutdown();
 
