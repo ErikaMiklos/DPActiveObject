@@ -14,14 +14,16 @@ public class Canal implements ObserverAsync,CapteurAsync {
 
     private final Capteur capteurImpl;
     private final Observer afficheur;
-    private final ScheduledExecutorService scheduler;
+    private final ScheduledExecutorService schedulerGetValue;
+    private final ScheduledExecutorService schedulerUpdate;
     private final ExecutorService executor;
 
     public Canal(@NotNull Capteur capteur) {
         capteurImpl = capteur;
         this.afficheur = new Afficheur();
         capteur.attache(afficheur);
-        this.scheduler = Executors.newSingleThreadScheduledExecutor();
+        this.schedulerGetValue = Executors.newSingleThreadScheduledExecutor();
+        this.schedulerUpdate = Executors.newSingleThreadScheduledExecutor();
         this.executor = Executors.newSingleThreadExecutor();
     }
 
@@ -35,14 +37,15 @@ public class Canal implements ObserverAsync,CapteurAsync {
             }
         };
         //Schedule the Callable task with 500ms delay
-        Future<Integer> result = scheduler.schedule(task, 500, TimeUnit.MILLISECONDS);
+        Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
+        //Future<Integer> result = schedulerGetValue.schedule(task, 500, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
-            System.out.println("Getvalue = " + value);
+            System.out.println("Canal Getvalue = " + value);
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }
-        //scheduler.shutdown();
+        //schedulerGetValue.shutdown();
 
         return result;
     }
@@ -55,12 +58,13 @@ public class Canal implements ObserverAsync,CapteurAsync {
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("observer updated");
+            System.out.println("Canal updated");
         };
-        /*Future<?> schedule = scheduler.schedule(task,
+        /*Future<?> scheduleUpdate = schedulerUpdate.schedule(task,
                 new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);*/
-        //executor.shutdown();
+        //schedulerUpdate.shutdown();
 
+        //return scheduleUpdate;
         return executor.submit(task);
     }
 

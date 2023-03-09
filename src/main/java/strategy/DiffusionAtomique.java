@@ -3,6 +3,7 @@ package strategy;
 import observable.CapteurImpl;
 import proxy.Canal;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class DiffusionAtomique implements AlgoDiffusion {
 
@@ -20,6 +21,10 @@ public class DiffusionAtomique implements AlgoDiffusion {
         for(Canal c: canals) {
             c.update(capteur);
         }
+        /*if(canals.stream().map(Canal::getValue).allMatch(Future::isDone)) {
+            this.capteur.unLock();
+        }*/
         this.capteur.unLock();
+
     }
 }

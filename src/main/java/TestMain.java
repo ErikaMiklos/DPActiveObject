@@ -30,7 +30,7 @@ public class TestMain {
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
-        ScheduledExecutorService scheduler = newScheduledThreadPool(2);
+        ScheduledExecutorService scheduler = newScheduledThreadPool(1);
 
         Runnable task = () -> {
             try {
@@ -48,8 +48,7 @@ public class TestMain {
 
         Runnable cancelTask = () -> f.cancel(true);
         scheduler.schedule(cancelTask, 2500, TimeUnit.MILLISECONDS);
-        scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
-
+        //scheduler.shutdown();
         //scheduledExecutorService.shutdown();
 
     }
