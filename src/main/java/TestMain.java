@@ -32,9 +32,17 @@ public class TestMain {
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
+        ScheduledExecutorService scheduler = newScheduledThreadPool(2);
+
         Runnable task = () -> {
             try {
+                if(capteur.getValue()<5){
                     capteur.tick();
+                }
+                else{
+                    scheduler.shutdown();
+                }
+
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
@@ -42,8 +50,8 @@ public class TestMain {
 
         //scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
 
-        ScheduledExecutorService scheduler = newScheduledThreadPool(2);
-        scheduler.scheduleWithFixedDelay(task, 500, 5000, TimeUnit.MILLISECONDS);
+
+        scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
 
         scheduledExecutorService.shutdown();
 
