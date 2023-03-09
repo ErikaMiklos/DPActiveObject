@@ -11,6 +11,7 @@ import java.util.concurrent.*;
 
 public class CapteurImpl implements Capteur {
     private int value;
+    private boolean isLocked = false;
     private BlockingQueue<Integer> input;
     private BlockingQueue<Integer> output;
     private ScheduledExecutorService service;
@@ -40,17 +41,28 @@ public class CapteurImpl implements Capteur {
     public int getValue() throws InterruptedException {
         //unlock
         this.value = input.take();
+        unLock();
         System.out.println("valeur lecture: " + this.value);
         return  this.value;
+    }
+
+    private void lock() {
+        this.isLocked = true;
+    }
+    private void unLock() {
+        this.isLocked = false;
+    }
+
+    public boolean isLocked(){
+        return this.isLocked;
     }
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
         //lock
+        this.value++;
         diffusionAtomique.execute();
-        for(Observer o: observers) {
-            o.update(new Canal(this));
-        }
+        lock();
 
     }
 

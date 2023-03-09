@@ -29,7 +29,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
 
     @Override
     public void execute() throws InterruptedException{
-        input.put(++value);
+
         for(Canal c: canals) {
             c.update(capteur);
         }

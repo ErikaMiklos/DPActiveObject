@@ -39,7 +39,10 @@ public class TestMain {
             }
         };
 
-        scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
+        if(!capteur.isLocked()){
+            scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
+        }
+
         scheduledExecutorService.shutdown();
 
         //Executor scheduler = Executors.newFixedThreadPool(1);
