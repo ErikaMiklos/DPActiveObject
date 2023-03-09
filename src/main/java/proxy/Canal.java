@@ -38,7 +38,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         Future<Integer> result = scheduler.schedule(task, 500, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
-            System.out.println("value = " + value);
+            System.out.println("Getvalue = " + value);
         } catch (InterruptedException | ExecutionException ex) {
             ex.printStackTrace();
         }

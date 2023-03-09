@@ -16,6 +16,4 @@ public interface Capteur {
     void lock();
 
     void unLock();
-
-    boolean isLocked();
 }

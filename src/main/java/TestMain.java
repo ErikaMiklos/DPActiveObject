@@ -1,4 +1,5 @@
 import observable.CapteurImpl;
+import observers.Observer;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
@@ -12,23 +13,21 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 public class TestMain {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        AtomicInteger test= new AtomicInteger();
+        //AtomicInteger test= new AtomicInteger();
 
-        BlockingQueue<Integer> input = new ArrayBlockingQueue<>(5);
-        BlockingQueue<Integer> output = new ArrayBlockingQueue<>(5);
         List<Canal> canals = new ArrayList<>();
 
         AlgoDiffusion algo = new DiffusionAtomique();
 
-        CapteurImpl capteur = new CapteurImpl(input, output, algo);
+        CapteurImpl capteur = new CapteurImpl(algo);
 
 
         for (int i = 1; i < 5; i++) {
             Canal canal = new Canal(capteur);
             canals.add(canal);
-            //capteur.attache(canal);
         }
-        algo.configure(input, output, canals, capteur);
+
+        algo.configure(canals, capteur);
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
@@ -43,26 +42,15 @@ public class TestMain {
                     scheduler.shutdown();
                 }
 
-                } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
-                }
+            }
         };
 
         //scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
-
-
         scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
 
-        scheduledExecutorService.shutdown();
+        //scheduledExecutorService.shutdown();
 
-        //Executor scheduler = Executors.newFixedThreadPool(1);
-
-        /*scheduler.execute( () -> {
-            try {
-                capteur.tick();
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        });*/
     }
 }

@@ -19,7 +19,7 @@ public class Afficheur implements Observer {
         afficheListe.add(updatedValue);
 
         if(updatedValue==5){
-            Logger.getGlobal().info("Réussi à récupérer la valeur actuelle");
+            //Logger.getGlobal().info("Réussi à récupérer la valeur actuelle");
             System.out.println("Afficheur id " + this.hashCode() + " : Liste des valeurs récupérées: " + afficheListe);
         }
     }

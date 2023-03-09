@@ -1,31 +1,21 @@
 package observable;
 
 import observers.Observer;
-import proxy.Canal;
 import strategy.AlgoDiffusion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Thread;
 import java.util.concurrent.*;
 
 public class CapteurImpl implements Capteur {
-    private int value;
+    private int value = 0;
     private boolean isLocked = false;
-    private BlockingQueue<Integer> input;
-    private BlockingQueue<Integer> output;
-    private ScheduledExecutorService service;
-    private List<Observer> observers;
-    private AlgoDiffusion diffusionAtomique;
+    private final List<Observer> observers;
+    private final AlgoDiffusion algo;
 
-    public CapteurImpl(BlockingQueue<Integer> input, BlockingQueue<Integer> output, AlgoDiffusion diffusionAtomique)  {
-        this.input = input;
-        this.output = output;
-        this.diffusionAtomique = diffusionAtomique;
-        //diffusionAtomique.configure(input, output);
+    public CapteurImpl(AlgoDiffusion algo)  {
+        this.algo = algo;
         this.observers = new ArrayList<>();
-        this.service = Executors.newScheduledThreadPool(4);
-        this.value = 0;
     }
 
     @Override
@@ -39,9 +29,7 @@ public class CapteurImpl implements Capteur {
     }
 
     @Override
-    public int getValue() throws InterruptedException {
-        //unlock
-        System.out.println("valeur lecture: " + this.value);
+    public int getValue(){
         return  this.value;
     }
 
@@ -52,16 +40,15 @@ public class CapteurImpl implements Capteur {
         this.isLocked = false;
     }
 
-    public boolean isLocked(){
-        return this.isLocked;
-    }
-
     @Override
     public void tick() throws InterruptedException, ExecutionException {
         if (!isLocked){
             this.value++;
-            getValue();
-            diffusionAtomique.execute();
+            System.out.println("valeur capteurImpl: " + this.value);
+            algo.execute();
+        }
+        else {
+            System.out.println("tick is locked!!!");
         }
     }
 
