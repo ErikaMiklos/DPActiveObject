@@ -21,7 +21,7 @@ public class CapteurImpl implements Capteur {
         this.input = input;
         this.output = output;
         this.diffusionAtomique = diffusionAtomique;
-        diffusionAtomique.configure(input, output);
+        //diffusionAtomique.configure(input, output);
         this.observers = new ArrayList<>();
         this.service = Executors.newScheduledThreadPool(4);
     }
@@ -40,7 +40,7 @@ public class CapteurImpl implements Capteur {
     public int getValue() throws InterruptedException {
         //unlock
         this.value = input.take();
-        //System.out.println("valeur lecture: " + this.getValue());
+        System.out.println("valeur lecture: " + this.value);
         return  this.value;
     }
 

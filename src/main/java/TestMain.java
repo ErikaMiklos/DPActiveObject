@@ -5,6 +5,7 @@ import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class TestMain {
@@ -12,15 +13,19 @@ public class TestMain {
 
         BlockingQueue<Integer> input = new ArrayBlockingQueue<>(1);
         BlockingQueue<Integer> output = new ArrayBlockingQueue<>(1);
+        List<Canal> canals = new ArrayList<>();
 
         AlgoDiffusion algo = new DiffusionAtomique();
 
         CapteurImpl capteur = new CapteurImpl(input, output, algo);
 
+
         for (int i = 1; i < 5; i++) {
-            new Canal(capteur);
+            Canal canal = new Canal(capteur);
+            canals.add(canal);
             //capteur.attache(canal);
         }
+        algo.configure(input, output, canals, capteur);
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
