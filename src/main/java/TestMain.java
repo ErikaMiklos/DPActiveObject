@@ -1,5 +1,4 @@
 import observable.CapteurImpl;
-import observers.Observer;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
