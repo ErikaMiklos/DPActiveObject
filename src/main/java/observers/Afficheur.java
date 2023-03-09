@@ -16,6 +16,7 @@ public class Afficheur implements Observer {
     public void update(@NotNull Canal canal) throws ExecutionException, InterruptedException {
         Future<Integer> futureValue = canal.getValue();
         Integer updatedValue = futureValue.get();
+        System.out.println("afficheurid " + this.hashCode() + " a reçu la valeur: "+ updatedValue);
         afficheListe.add(updatedValue);
 
         if(updatedValue==5){

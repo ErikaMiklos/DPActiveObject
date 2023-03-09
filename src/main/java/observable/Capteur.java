@@ -12,8 +12,4 @@ public interface Capteur {
     int getValue() throws ExecutionException, InterruptedException;
 
     void tick() throws InterruptedException, ExecutionException;
-
-    void lock();
-
-    void unLock();
 }

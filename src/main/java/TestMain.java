@@ -45,6 +45,7 @@ public class TestMain {
 
         //scheduledExecutorService.schedule(task, 500, TimeUnit.MILLISECONDS);
         Future<?> f = scheduler.scheduleWithFixedDelay(task, 0, 500, TimeUnit.MILLISECONDS);
+        //scheduler.awaitTermination(10, TimeUnit.SECONDS);
 
         Runnable cancelTask = () -> f.cancel(true);
         scheduler.schedule(cancelTask, 2500, TimeUnit.MILLISECONDS);

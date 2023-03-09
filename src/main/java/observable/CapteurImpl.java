@@ -35,9 +35,11 @@ public class CapteurImpl implements Capteur {
 
     public void lock() {
         this.isLocked = true;
+        //System.out.println("isLocked");
     }
     public void unLock() {
         this.isLocked = false;
+        //System.out.println("UnLocked");
     }
 
     @Override
