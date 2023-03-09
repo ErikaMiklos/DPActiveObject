@@ -25,6 +25,7 @@ public class CapteurImpl implements Capteur {
         //diffusionAtomique.configure(input, output);
         this.observers = new ArrayList<>();
         this.service = Executors.newScheduledThreadPool(4);
+        this.value = 0;
     }
 
     @Override
@@ -40,16 +41,14 @@ public class CapteurImpl implements Capteur {
     @Override
     public int getValue() throws InterruptedException {
         //unlock
-        this.value = input.take();
-        unLock();
         System.out.println("valeur lecture: " + this.value);
         return  this.value;
     }
 
-    private void lock() {
+    public void lock() {
         this.isLocked = true;
     }
-    private void unLock() {
+    public void unLock() {
         this.isLocked = false;
     }
 
@@ -59,11 +58,11 @@ public class CapteurImpl implements Capteur {
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
-        //lock
-        this.value++;
-        diffusionAtomique.execute();
-        lock();
-
+        if (!isLocked){
+            this.value++;
+            getValue();
+            diffusionAtomique.execute();
+        }
     }
 
 

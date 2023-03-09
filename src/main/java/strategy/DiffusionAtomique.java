@@ -8,6 +8,7 @@ import proxy.Canal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 
 public class DiffusionAtomique implements AlgoDiffusion {
 
@@ -28,11 +29,12 @@ public class DiffusionAtomique implements AlgoDiffusion {
     }
 
     @Override
-    public void execute() throws InterruptedException{
-
+    public void execute() throws InterruptedException, ExecutionException {
+        this.capteur.lock();
         for(Canal c: canals) {
             c.update(capteur);
         }
         System.out.println("valeur écriture " + input.peek());
+        this.capteur.unLock();
     }
 }
