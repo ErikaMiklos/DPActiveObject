@@ -2,16 +2,14 @@ package strategy;
 
 import observable.CapteurImpl;
 import proxy.Canal;
+
 import java.util.List;
 
 /**
- * Il s'agit de l'agorithme de diffusion atomique qui permet
- * l'envoi de données identiques aux afficheurs
- * à chaque changement de valeur du capteur.
- * Pour ce faire, il utilise un système de semaphore bloquant l'écriture
- * tant que les afficheurs n'ont pas tous lus la donnée.
+ * Il s'agit de l'agorithme de diffusion époque qui permet
+ * l'envoi de données en controlant uniquement le fait que la donnée la plus récente est retenu par les afficheurs.
  */
-public class DiffusionAtomique implements AlgoDiffusion {
+public class DiffusionEpoque implements AlgoDiffusion {
 
     int nbDeCanaux =0;
     private List<Canal> canals;
@@ -28,7 +26,6 @@ public class DiffusionAtomique implements AlgoDiffusion {
      */
     @Override
     public void execute(){
-        this.capteur.lock();
         for(Canal c: canals) {
             c.update(capteur);
             this.nbDeCanaux++;
@@ -50,7 +47,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
     public void lectureFaite(){
         this.nbDeCanaux--;
         if (nbDeCanaux ==0){
-            this.capteur.unLock();
+
         }
     }
 }

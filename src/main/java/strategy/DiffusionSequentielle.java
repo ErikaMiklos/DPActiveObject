@@ -2,16 +2,17 @@ package strategy;
 
 import observable.CapteurImpl;
 import proxy.Canal;
+
 import java.util.List;
 
 /**
- * Il s'agit de l'agorithme de diffusion atomique qui permet
+ * Il s'agit de l'agorithme de diffusion séquentielle qui permet
  * l'envoi de données identiques aux afficheurs
- * à chaque changement de valeur du capteur.
+ * cependant, il ne récupère par toutes les données du capteur.
  * Pour ce faire, il utilise un système de semaphore bloquant l'écriture
- * tant que les afficheurs n'ont pas tous lus la donnée.
+ * tant que les afficheurs n'ont pas tous lus la donnée et utilise .
  */
-public class DiffusionAtomique implements AlgoDiffusion {
+public class DiffusionSequentielle implements AlgoDiffusion {
 
     int nbDeCanaux =0;
     private List<Canal> canals;

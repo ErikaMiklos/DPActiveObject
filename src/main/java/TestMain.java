@@ -2,6 +2,7 @@ import observable.CapteurImpl;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
+import strategy.DiffusionEpoque;
 
 import java.util.ArrayList;
 import java.util.List;
