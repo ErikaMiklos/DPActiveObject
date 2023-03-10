@@ -11,22 +11,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 public class TestMain {
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
-        //AtomicInteger test= new AtomicInteger();
-
-        List<Canal> canals = new ArrayList<>();
+    public static void main(String[] args){
 
         AlgoDiffusion algo = new DiffusionAtomique();
-
         CapteurImpl capteur = new CapteurImpl(algo);
-
-
-        for (int i = 1; i < 5; i++) {
-            Canal canal = new Canal(capteur);
-            canals.add(canal);
-        }
-
-        algo.configure(canals, capteur);
+        algo.configure(capteur);
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 
