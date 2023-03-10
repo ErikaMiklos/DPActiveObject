@@ -44,7 +44,7 @@ public class TestRun {
                     }
                 }, 0, 500, TimeUnit.MILLISECONDS);
         try {
-            sleep(8000);
+            sleep(7000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -14,6 +14,7 @@ public class CapteurImpl implements Capteur {
     private final AlgoDiffusion algo;
     private BlockingQueue<Integer> queue;
     private List<Canal> canals;
+    private int compteur = 0;
 
 
     public CapteurImpl(int sizeOfQueue, AlgoDiffusion algo)  {
@@ -46,8 +47,14 @@ public class CapteurImpl implements Capteur {
     }
 
     @Override
-    public int getValue(){
-        return  value;
+    public int getValue() throws InterruptedException {
+        compteur++;
+        if (compteur == 4) {
+            compteur = 0;
+            return queue.take();
+        } else {
+            return queue.peek();
+        }
     }
 
     @Override
@@ -56,7 +63,7 @@ public class CapteurImpl implements Capteur {
             queue.put(++value);
             System.out.println("valeur capteurImpl: " + value);
             algo.execute();
-            queue.take();
+            //queue.take();
         }
 
     }
