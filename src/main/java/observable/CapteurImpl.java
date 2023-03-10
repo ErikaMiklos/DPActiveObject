@@ -53,15 +53,23 @@ public class CapteurImpl implements Capteur {
     }
 
     /**
-     * Fonction de récupération de la value qui fait appel
-     * à la méthode lectureFaite de l'algo pour permettre
-     * le dévérouillage de la méthode tick du capteur.
-     * @return
+     * Fonction de récupération de la value actuelle du capteur
+     * @return value
      */
     @Override
     public int getValue(){
-        algo.lectureFaite();
-        return  this.value;
+        return this.value;
+    }
+
+    /**
+     * Fonction de récupération de la value qui fait appel
+     * à la méthode lectureFaite de l'algo pour permettre
+     * la gestion des values transferés.
+     * @return value du capteur par l'algo utilisé
+     */
+    @Override
+    public int getValueAsync(){
+        return algo.lectureRealisee();
     }
 
     /**

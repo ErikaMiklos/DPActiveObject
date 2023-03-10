@@ -44,10 +44,11 @@ public class DiffusionEpoque implements AlgoDiffusion {
      * Quand tous les canaux ont récupéré les données,
      * le nbDeCanaux tombe à zéro et le capteur est dévérouiller.
      */
-    public void lectureFaite(){
+    public int lectureRealisee(){
         this.nbDeCanaux--;
         if (nbDeCanaux ==0){
 
         }
+        return capteur.getValue();
     }
 }

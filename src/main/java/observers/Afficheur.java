@@ -18,11 +18,12 @@ public class Afficheur implements Observer {
         Integer updatedValue = futureValue.get();
         System.out.println("afficheurid " + this.hashCode() + " a reçu la valeur: "+ updatedValue);
         afficheListe.add(updatedValue);
+        getResultatFinal();
+    }
 
-        if(updatedValue==5){
-            //Logger.getGlobal().info("Réussi à récupérer la valeur actuelle");
-            System.out.println("Afficheur id " + this.hashCode() + " : Liste des valeurs récupérées: " + afficheListe);
-        }
+    public List<Integer> getResultatFinal(){
+        System.out.println("Afficheur id " + this.hashCode() + " : Liste des valeurs récupérées: " + afficheListe);
+        return afficheListe;
     }
 }
 

@@ -11,5 +11,5 @@ import java.util.concurrent.ExecutionException;
 public interface AlgoDiffusion {
     void configure(CapteurImpl capteur);
     void execute() throws InterruptedException, ExecutionException;
-    void lectureFaite();
+    int lectureRealisee();
 }

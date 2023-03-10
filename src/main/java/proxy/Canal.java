@@ -42,7 +42,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         //Create a new Callable to perform the task
         Callable<Integer> task = () -> {
             //Perform the task
-            return capteurImpl.getValue();
+            return capteurImpl.getValueAsync();
         };
         //Schedule the Callable task with 500ms delay
         //Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);

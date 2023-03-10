@@ -29,6 +29,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
     @Override
     public void execute(){
         this.capteur.lock();
+
         for(Canal c: canals) {
             c.update(capteur);
             this.nbDeCanaux++;
@@ -45,12 +46,14 @@ public class DiffusionAtomique implements AlgoDiffusion {
     /**
      * Méthode de décrémentation du nombre de canaux devant lire les valeurs du capteur.
      * Quand tous les canaux ont récupéré les données,
-     * le nbDeCanaux tombe à zéro et le capteur est dévérouiller.
+     * le nbDeCanaux tombe à zéro et le capteur est déverrouillé.
      */
-    public void lectureFaite(){
+    public int lectureRealisee(){
         this.nbDeCanaux--;
+        int value = capteur.getValue();
         if (nbDeCanaux ==0){
             this.capteur.unLock();
         }
+        return value;
     }
 }
