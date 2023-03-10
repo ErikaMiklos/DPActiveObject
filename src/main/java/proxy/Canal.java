@@ -47,7 +47,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         //Schedule the Callable task with 500ms delay
         //Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
         int delay = (int) (500 + Math.random()*(1500-500));
-        Future<Integer> result = schedulerGetValue.schedule(task, 1500, TimeUnit.MILLISECONDS);
+        Future<Integer> result = schedulerGetValue.schedule(task, delay, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
             System.out.println("Canal Getvalue = " + value);

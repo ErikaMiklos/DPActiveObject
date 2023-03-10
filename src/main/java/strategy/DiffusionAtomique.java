@@ -17,9 +17,9 @@ public class DiffusionAtomique implements AlgoDiffusion {
     private List<Canal> canals;
     private CapteurImpl capteur;
     @Override
-    public void configure(List<Canal> canals, CapteurImpl capteur) {
+    public void configure(CapteurImpl capteur) {
         this.capteur = capteur;
-        this.canals = canals;
+        this.canals = capteur.getCanals();
     }
 
     /**

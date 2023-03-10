@@ -20,13 +20,7 @@ public class TestMain {
 
         CapteurImpl capteur = new CapteurImpl(algo);
 
-
-        for (int i = 1; i < 5; i++) {
-            Canal canal = new Canal(capteur);
-            canals.add(canal);
-        }
-
-        algo.configure(canals, capteur);
+        algo.configure(capteur);
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 

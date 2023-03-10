@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 public interface AlgoDiffusion {
-    void configure(List<Canal> canals, CapteurImpl capteur);
+    void configure(CapteurImpl capteur);
     void execute() throws InterruptedException, ExecutionException;
     void lectureFaite();
 }

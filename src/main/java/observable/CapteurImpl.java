@@ -1,6 +1,7 @@
 package observable;
 
 import observers.Observer;
+import proxy.Canal;
 import strategy.AlgoDiffusion;
 
 import java.util.ArrayList;
@@ -16,11 +17,21 @@ public class CapteurImpl implements Capteur {
     private boolean isLocked = false;
     private final List<Observer> observers;
     private final AlgoDiffusion algo;
+    private List<Canal> canals;
 
     public CapteurImpl(AlgoDiffusion algo)  {
         this.algo = algo;
         this.observers = new ArrayList<>();
         this.values = new ArrayList<>();
+        canals = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Canal canal = new Canal(this);
+            canals.add(canal);
+        }
+    }
+
+    public List<Canal> getCanals() {
+        return canals;
     }
 
     /**
