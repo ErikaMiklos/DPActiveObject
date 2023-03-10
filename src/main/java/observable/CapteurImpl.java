@@ -17,7 +17,7 @@ public class CapteurImpl implements Capteur {
     private int compteur = 0;
 
 
-    public CapteurImpl(int sizeOfQueue, AlgoDiffusion algo)  {
+    public CapteurImpl(BlockingQueue<Integer> queue, AlgoDiffusion algo)  {
         this.algo = algo;
         observers = new ArrayList<>();
         canals = new ArrayList<>();
@@ -25,7 +25,7 @@ public class CapteurImpl implements Capteur {
             Canal canal = new Canal(this);
             canals.add(canal);
         }
-        this.queue = new ArrayBlockingQueue<>(sizeOfQueue);
+        this.queue = queue;
     }
 
     public List<Canal> getCanals() {

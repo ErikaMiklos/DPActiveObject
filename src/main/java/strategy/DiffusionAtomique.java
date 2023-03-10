@@ -12,10 +12,12 @@ import java.util.concurrent.Future;
 public class DiffusionAtomique implements AlgoDiffusion {
 
     private CapteurImpl capteur;
+    private BlockingQueue<Integer> queue;
 
     @Override
-    public void configure(CapteurImpl capteur) {
+    public void configure(BlockingQueue<Integer> queue, CapteurImpl capteur) {
         this.capteur = capteur;
+        this.queue = queue;
     }
 
     @Override

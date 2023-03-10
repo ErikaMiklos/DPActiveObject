@@ -14,8 +14,9 @@ public class TestMain {
     public static void main(String[] args){
 
         AlgoDiffusion algo = new DiffusionAtomique();
-        CapteurImpl capteur = new CapteurImpl(1, algo);
-        algo.configure(capteur);
+        BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(1);
+        CapteurImpl capteur = new CapteurImpl(queue, algo);
+        algo.configure(queue, capteur);
 
         ScheduledExecutorService scheduledExecutorService= Executors.newSingleThreadScheduledExecutor();
 

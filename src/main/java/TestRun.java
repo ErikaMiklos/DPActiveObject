@@ -16,6 +16,7 @@ public class TestRun {
     private AlgoDiffusion algo;
     private CapteurImpl capteur;
     private ScheduledExecutorService scheduler;
+    private BlockingQueue<Integer> queue;
 
     @BeforeEach
     void setup() {
@@ -29,9 +30,10 @@ public class TestRun {
     @DisplayName("DiffusionAtomique")
     void diffusionAtomique() {
         sizeOfQueue = 1;
+        queue = new ArrayBlockingQueue<>(sizeOfQueue);
         algo = new DiffusionAtomique();
-        capteur = new CapteurImpl(sizeOfQueue, algo);
-        algo.configure(capteur);
+        capteur = new CapteurImpl(queue, algo);
+        algo.configure(queue, capteur);
 
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
@@ -56,9 +58,10 @@ public class TestRun {
     @DisplayName("DiffusionSequence")
     void diffusionSequence() {
         sizeOfQueue = 5;
+        queue = new ArrayBlockingQueue<>(sizeOfQueue);
         algo = new DiffusionSequence();
-        capteur = new CapteurImpl(sizeOfQueue, algo);
-        algo.configure(capteur);
+        capteur = new CapteurImpl(queue, algo);
+        algo.configure(queue, capteur);
 
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
