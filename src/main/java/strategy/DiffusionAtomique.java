@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 public class DiffusionAtomique implements AlgoDiffusion {
 
+    int nbDeCapteur=0;
     private List<Canal> canals;
     private CapteurImpl capteur;
     @Override
@@ -20,11 +21,21 @@ public class DiffusionAtomique implements AlgoDiffusion {
         this.capteur.lock();
         for(Canal c: canals) {
             c.update(capteur);
+            this.nbDeCapteur++;
         }
-        /*if(canals.stream().map(Canal::getValue).allMatch(Future::isDone)) {
-            this.capteur.unLock();
-        }*/
-        this.capteur.unLock();
 
+
+        /*
+        if(canals.stream().map(Canal::getValue).allMatch(Future::isDone)) {
+            this.capteur.unLock();
+        }
+        */
+    }
+
+    public void lectureFaite(){
+        this.nbDeCapteur--;
+        if (nbDeCapteur==0){
+            this.capteur.unLock();
+        }
     }
 }

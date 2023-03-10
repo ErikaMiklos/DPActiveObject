@@ -34,10 +34,7 @@ public class TestMain {
 
         Runnable task = () -> {
             try {
-                if(capteur.getValue()<5){
                     capteur.tick();
-                }
-
             } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
             }
@@ -48,7 +45,7 @@ public class TestMain {
         //scheduler.awaitTermination(10, TimeUnit.SECONDS);
 
         Runnable cancelTask = () -> f.cancel(true);
-        scheduler.schedule(cancelTask, 2500, TimeUnit.MILLISECONDS);
+        scheduler.schedule(cancelTask, 15, TimeUnit.SECONDS);
         //scheduler.shutdown();
         //scheduledExecutorService.shutdown();
 

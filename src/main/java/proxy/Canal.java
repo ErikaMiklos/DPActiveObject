@@ -30,15 +30,14 @@ public class Canal implements ObserverAsync,CapteurAsync {
     @Override
     public Future<Integer> getValue(){
         //Create a new Callable to perform the task
-        Callable<Integer> task = new Callable<Integer>() {
-            public Integer call() throws ExecutionException, InterruptedException {
-                //Perform the task
-                return capteurImpl.getValue();
-            }
+        Callable<Integer> task = () -> {
+            //Perform the task
+            return capteurImpl.getValue();
         };
         //Schedule the Callable task with 500ms delay
         //Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
-        Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
+        int delay = (int) (500 + Math.random()*(1500-500));
+        Future<Integer> result = schedulerGetValue.schedule(task, delay, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
             System.out.println("Canal Getvalue = " + value);
