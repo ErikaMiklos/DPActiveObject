@@ -36,8 +36,8 @@ public class Canal implements ObserverAsync,CapteurAsync {
                 return capteurImpl.getValue();
             }
         };
-
         Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
+        //Future<Integer> result = schedulerGetValue.schedule(task, new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
             System.out.println("Canal Getvalue = " + value);
@@ -60,8 +60,8 @@ public class Canal implements ObserverAsync,CapteurAsync {
             System.out.println("Canal updated");
         };
         //Schedule update task with delay entre 500ms-1500ms randomly
-        Future<?> scheduleUpdate = schedulerUpdate.schedule(task,
-                new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
+        Future<?> scheduleUpdate = schedulerUpdate.schedule(task, new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
+        //Future<?> scheduleUpdate = schedulerUpdate.schedule(task, 1, TimeUnit.MILLISECONDS);
         //schedulerUpdate.shutdown();
 
         return scheduleUpdate;
