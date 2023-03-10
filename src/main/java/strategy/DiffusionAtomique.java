@@ -12,27 +12,16 @@ import java.util.concurrent.Future;
 public class DiffusionAtomique implements AlgoDiffusion {
 
     private CapteurImpl capteur;
-    public BlockingQueue<Integer> queue;
+
     @Override
-    public void configure(int sizeOfQueue, CapteurImpl capteur) {
+    public void configure(CapteurImpl capteur) {
         this.capteur = capteur;
-        this.queue = new ArrayBlockingQueue<>(sizeOfQueue);
     }
 
     @Override
-    public void execute() throws InterruptedException {
-        queue.put(capteur.getValue());
-
+    public void execute() {
         for(Canal c: capteur.getCanals()) {
             c.update(capteur);
         }
-
-        //capteur.getCanals().stream().map(Canal::getAfficheur).forEach().filter;
-
-        queue.take();
-        /*if(canals.stream().map(Canal::getValue).allMatch(Future::isDone)) {
-        }*/
-
-
     }
 }

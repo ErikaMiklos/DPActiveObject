@@ -9,6 +9,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 public interface AlgoDiffusion {
-    void configure(int sizeOfQueue, CapteurImpl capteur);
+    void configure(CapteurImpl capteur);
     void execute() throws InterruptedException, ExecutionException;
 }

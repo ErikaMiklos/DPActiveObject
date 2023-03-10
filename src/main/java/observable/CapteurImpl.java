@@ -12,9 +12,11 @@ public class CapteurImpl implements Capteur {
     private int value = 0;
     private final List<Observer> observers;
     private final AlgoDiffusion algo;
+    private BlockingQueue<Integer> queue;
     private List<Canal> canals;
 
-    public CapteurImpl(AlgoDiffusion algo)  {
+
+    public CapteurImpl(int sizeOfQueue, AlgoDiffusion algo)  {
         this.algo = algo;
         observers = new ArrayList<>();
         canals = new ArrayList<>();
@@ -22,6 +24,7 @@ public class CapteurImpl implements Capteur {
             Canal canal = new Canal(this);
             canals.add(canal);
         }
+        this.queue = new ArrayBlockingQueue<>(sizeOfQueue);
     }
 
     public List<Canal> getCanals() {
@@ -49,9 +52,13 @@ public class CapteurImpl implements Capteur {
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
-        value++;
-        System.out.println("valeur capteurImpl: " + value);
-        algo.execute();
+        if(value < 6) {
+            queue.put(++value);
+            System.out.println("valeur capteurImpl: " + value);
+            algo.execute();
+            queue.take();
+        }
+
     }
 
 

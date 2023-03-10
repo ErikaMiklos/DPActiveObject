@@ -29,8 +29,8 @@ public class TestRun {
     void diffusionAtomique() {
         sizeOfQueue = 1;
         algo = new DiffusionAtomique();
-        capteur = new CapteurImpl(algo);
-        algo.configure(sizeOfQueue, capteur);
+        capteur = new CapteurImpl(sizeOfQueue, algo);
+        algo.configure(capteur);
 
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
@@ -44,7 +44,7 @@ public class TestRun {
                     }
                 }, 0, 500, TimeUnit.MILLISECONDS);
         try {
-            sleep(2500);
+            sleep(8000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();

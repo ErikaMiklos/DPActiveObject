@@ -16,12 +16,11 @@ public class Afficheur implements Observer {
     @Override
     public void update(@NotNull Canal canal) throws ExecutionException, InterruptedException {
         Future<Integer> futureValue = canal.getValue();
-        valueArrived = canal.getValue().get();
-        Integer updatedValue = futureValue.get();
-        System.out.println("afficheurid " + this.hashCode() + " a reçu la valeur: "+ updatedValue);
-        afficheListe.add(updatedValue);
+        valueArrived = futureValue.get();
+        System.out.println("afficheurid " + this.hashCode() + " a reçu la valeur: "+ valueArrived);
+        afficheListe.add(valueArrived);
 
-        if(updatedValue==5){
+        if(valueArrived==5){
             //Logger.getGlobal().info("Réussi à récupérer la valeur actuelle");
             System.out.println("Afficheur id " + this.hashCode() + " : Liste des valeurs récupérées: " + afficheListe);
         }
