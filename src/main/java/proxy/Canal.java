@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 import java.util.concurrent.*;
 
+/**
+ * Le canal est l'intermedaire entre le capteur et l'afficheur,
+ * il joue le rôle de proxy pour le capteur et l'afficheur.
+ */
 public class Canal implements ObserverAsync,CapteurAsync {
 
     private final Capteur capteurImpl;
@@ -27,6 +31,12 @@ public class Canal implements ObserverAsync,CapteurAsync {
         this.executor = Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Cette méthode crée une classe getValue à l'aide d'un callable qui est ensuite utilisé
+     * par le scheduler avec des délais d'initialisation allant de 500 à 1500 pour simuler le réseau.
+     *
+     * @return Future<Integer>
+     */
     @Override
     public Future<Integer> getValue(){
         //Create a new Callable to perform the task
@@ -37,7 +47,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
         //Schedule the Callable task with 500ms delay
         //Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
         int delay = (int) (500 + Math.random()*(1500-500));
-        Future<Integer> result = schedulerGetValue.schedule(task, delay, TimeUnit.MILLISECONDS);
+        Future<Integer> result = schedulerGetValue.schedule(task, 1500, TimeUnit.MILLISECONDS);
         try {
             Integer value = result.get();
             System.out.println("Canal Getvalue = " + value);
@@ -49,6 +59,11 @@ public class Canal implements ObserverAsync,CapteurAsync {
         return result;
     }
 
+    /**
+     *
+     * @param capteur
+     * @return Future<Integer>
+     */
     @Override
     public Future<?> update(Capteur capteur){
         Runnable task = () -> {
