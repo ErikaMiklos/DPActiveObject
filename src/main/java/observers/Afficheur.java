@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 
 public class Afficheur implements Observer {
     private final List<Integer> afficheListe = new ArrayList<>();
+    private int valueArrived;
 
     @Override
     public void update(@NotNull Canal canal) throws ExecutionException, InterruptedException {
         Future<Integer> futureValue = canal.getValue();
+        valueArrived = canal.getValue().get();
         Integer updatedValue = futureValue.get();
         System.out.println("afficheurid " + this.hashCode() + " a reçu la valeur: "+ updatedValue);
         afficheListe.add(updatedValue);

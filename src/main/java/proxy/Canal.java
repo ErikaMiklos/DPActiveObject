@@ -27,6 +27,10 @@ public class Canal implements ObserverAsync,CapteurAsync {
         this.executor = Executors.newSingleThreadExecutor();
     }
 
+    public Observer getAfficheur() {
+        return afficheur;
+    }
+
     @Override
     public Future<Integer> getValue(){
         //Create a new Callable to perform the task

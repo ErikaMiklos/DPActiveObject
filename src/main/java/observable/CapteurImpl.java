@@ -10,7 +10,6 @@ import java.util.concurrent.*;
 
 public class CapteurImpl implements Capteur {
     private int value = 0;
-    private boolean isLocked = false;
     private final List<Observer> observers;
     private final AlgoDiffusion algo;
     private List<Canal> canals;
@@ -29,6 +28,10 @@ public class CapteurImpl implements Capteur {
         return canals;
     }
 
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     @Override
     public void attache(Observer observer) {
         observers.add(observer);
@@ -41,28 +44,14 @@ public class CapteurImpl implements Capteur {
 
     @Override
     public int getValue(){
-        return  this.value;
-    }
-
-    public void lock() {
-        this.isLocked = true;
-        //System.out.println("isLocked");
-    }
-    public void unLock() {
-        this.isLocked = false;
-        //System.out.println("UnLocked");
+        return  value;
     }
 
     @Override
     public void tick() throws InterruptedException, ExecutionException {
-        if (!isLocked){
-            this.value++;
-            System.out.println("valeur capteurImpl: " + this.value);
-            algo.execute();
-        }
-        else {
-            System.out.println("tick is locked!!!");
-        }
+        value++;
+        System.out.println("valeur capteurImpl: " + value);
+        algo.execute();
     }
 
 

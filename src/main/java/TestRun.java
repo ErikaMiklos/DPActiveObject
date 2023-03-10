@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 import static java.lang.Thread.sleep;
 
 public class TestRun {
-    private static final int QUEUE_CAPACITY = 1;
+    private int sizeOfQueue;
     private AlgoDiffusion algo;
     private CapteurImpl capteur;
     private ScheduledExecutorService scheduler;
@@ -27,13 +27,15 @@ public class TestRun {
     @Test
     @DisplayName("DiffusionAtomique")
     void diffusionAtomique() {
+        sizeOfQueue = 1;
         algo = new DiffusionAtomique();
         capteur = new CapteurImpl(algo);
-        algo.configure(capteur);
+        algo.configure(sizeOfQueue, capteur);
 
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
+                        System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
