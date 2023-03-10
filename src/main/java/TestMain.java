@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 public class TestMain {
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
 
         AlgoDiffusion algo = new DiffusionAtomique();
         BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(1);

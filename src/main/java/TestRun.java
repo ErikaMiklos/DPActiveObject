@@ -28,7 +28,7 @@ public class TestRun {
 
     @Test
     @DisplayName("DiffusionAtomique")
-    void diffusionAtomique() {
+    void diffusionAtomique() throws InterruptedException {
         sizeOfQueue = 1;
         queue = new ArrayBlockingQueue<>(sizeOfQueue);
         algo = new DiffusionAtomique();
@@ -47,7 +47,7 @@ public class TestRun {
                     }
                 }, 0, 500, TimeUnit.MILLISECONDS);
         try {
-            sleep(7000);
+            sleep(8000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class TestRun {
 
     @Test
     @DisplayName("DiffusionSequence")
-    void diffusionSequence() {
+    void diffusionSequence() throws InterruptedException {
         sizeOfQueue = 5;
         queue = new ArrayBlockingQueue<>(sizeOfQueue);
         algo = new DiffusionSequence();

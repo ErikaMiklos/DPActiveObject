@@ -60,7 +60,7 @@ public class CapteurImpl implements Capteur {
     @Override
     public void tick() throws InterruptedException, ExecutionException {
         if(value < 6) {
-            queue.put(++value);
+            ++value;
             System.out.println("valeur capteurImpl: " + value);
             algo.execute();
             //queue.take();

@@ -13,6 +13,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
 
     private CapteurImpl capteur;
     private BlockingQueue<Integer> queue;
+    private int value = 0;
 
     @Override
     public void configure(BlockingQueue<Integer> queue, CapteurImpl capteur) {
@@ -21,7 +22,9 @@ public class DiffusionAtomique implements AlgoDiffusion {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws InterruptedException {
+
+        queue.put(++value);
         for(Canal c: capteur.getCanals()) {
             c.update(capteur);
         }
