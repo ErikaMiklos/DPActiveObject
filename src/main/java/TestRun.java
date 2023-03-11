@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
+import strategy.DiffusionEpoque;
 import strategy.DiffusionSequence;
 
 import java.util.concurrent.*;
@@ -16,13 +17,10 @@ public class TestRun {
     private AlgoDiffusion algo;
     private CapteurImpl capteur;
     private ScheduledExecutorService scheduler;
-    private ScheduledExecutorService schedulerSetValue;
     private BlockingQueue<Integer> queue;
 
     @BeforeEach
     void setup() {
-        //scheduler = Executors.newSingleThreadScheduledExecutor();
-        //schedulerSetValue = Executors.newSingleThreadScheduledExecutor();
         scheduler = Executors.newScheduledThreadPool(2);
     }
 
@@ -86,6 +84,35 @@ public class TestRun {
             e.printStackTrace();
         }
 
+    }
 
+    @Test
+    @DisplayName("DiffusionEpoque")
+    void diffusionEpoque() throws InterruptedException {
+        sizeOfQueue = 1;
+        queue = new ArrayBlockingQueue<>(sizeOfQueue);
+        algo = new DiffusionEpoque();
+        capteur = new CapteurImpl(queue, algo);
+        algo.configure(queue, capteur);
+
+        ScheduledFuture<?> future =
+                scheduler.scheduleAtFixedRate(() -> {
+                    try {
+                        System.out.println("setValue");
+                        capteur.setValue();
+                        System.out.println("tick");
+                        capteur.tick();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, 500, 500, TimeUnit.MILLISECONDS);
+        try {
+            sleep(8000);
+            future.cancel(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
