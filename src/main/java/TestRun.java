@@ -140,7 +140,7 @@ public class TestRun {
         map.put(2, new DiffusionSequence());
         map.put(3, new DiffusionEpoque());
         Random random = new Random();
-        int select = random.nextInt(4);
+        int select = random.nextInt(3)+1;
 
         algo = map.get(select);
         capteur = new CapteurImpl(queue, algo);
