@@ -2,21 +2,34 @@ package strategy;
 
 import observable.CapteurImpl;
 import proxy.Canal;
-
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * La classe DiffusionEpoque joue le rôle d'Êcriture
+ * elle produise une valeur incréménté via une BlockingQueue vers
+ * la Lecture celle la classe CapteurImpl.
+ */
 public class DiffusionEpoque implements AlgoDiffusion {
 
     private CapteurImpl capteur;
     private BlockingQueue<Integer> queue;
     private int value = 0;
 
+    /**
+     * Configure l'algo
+     * @param queue: BlockingQueue avec une seul Case
+     * @param capteur: Lecture des données produit de l'algo
+     */
     @Override
     public void configure(BlockingQueue<Integer> queue, CapteurImpl capteur) {
         this.capteur = capteur;
         this.queue = queue;
     }
 
+    /**
+     * Méthode d'execution principale bloquant l'écriture sur le capteur et faisant appel
+     * à la méthode update de tous les canaux.
+     */
     @Override
     public void execute() throws InterruptedException {
 
@@ -26,6 +39,9 @@ public class DiffusionEpoque implements AlgoDiffusion {
         }
         queue.take();
     }
+    /**
+     * Méthode pour incrémenter la valeur de maniére non-blockant.
+     */
     @Override
     public void setValue(){
          ++value;

@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 public interface Capteur {
     void attache(Afficheur afficheur);
 
-    void detache(Observer observer);
+    void detache(Afficheur afficheur);
 
     int getValue() throws ExecutionException, InterruptedException;
 
