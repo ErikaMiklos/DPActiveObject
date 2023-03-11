@@ -39,12 +39,13 @@ public class TestRun {
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
+        System.out.println("DiffusionAtomique travaille.....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        System.out.println("setValue");
+                        //System.out.println("setValue");
                         capteur.setValue();
-                        System.out.println("tick");
+                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -58,6 +59,12 @@ public class TestRun {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        System.out.println("La Résultat:");
+        for (Canal c: capteur.getCanals()) {
+            System.out.println("Afficheur id " + c.getAfficheur().hashCode() +
+                    " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
+        }
     }
 
     @Test
@@ -69,12 +76,13 @@ public class TestRun {
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
+        System.out.println("DiffusionSéquence travaille.....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        System.out.println("setValue");
+                        //System.out.println("setValue");
                         capteur.setValue();
-                        System.out.println("tick");
+                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
@@ -85,6 +93,12 @@ public class TestRun {
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        System.out.println("La Résultat:");
+        for (Canal c: capteur.getCanals()) {
+            System.out.println("Afficheur id " + c.getAfficheur().hashCode() +
+                    " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
         }
 
     }
@@ -98,19 +112,20 @@ public class TestRun {
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
+        System.out.println("DiffusionEpoque travaille.....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        System.out.println("setValue");
+                        //System.out.println("setValue");
                         capteur.setValue();
-                        System.out.println("tick");
+                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     }
-                }, 500, 700, TimeUnit.MILLISECONDS);
+                }, 500, 800, TimeUnit.MILLISECONDS);
         try {
             sleep(7000);
             future.cancel(true);
@@ -118,8 +133,10 @@ public class TestRun {
             e.printStackTrace();
         }
 
+        System.out.println("La Résultat:");
         for (Canal c: capteur.getCanals()) {
-            System.out.println("Afficheur id " + c.getAfficheur().hashCode() + " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
+            System.out.println("Afficheur id " + c.getAfficheur().hashCode() +
+                    " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
         }
 
     }

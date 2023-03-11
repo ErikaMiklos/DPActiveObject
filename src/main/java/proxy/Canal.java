@@ -3,7 +3,6 @@ package proxy;
 import async.CapteurAsync;
 import observable.Capteur;
 import observers.Afficheur;
-import observers.Observer;
 import async.ObserverAsync;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,16 +39,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
                 return capteurImpl.getValue();
             }
         };
-        //Future<Integer> result = schedulerGetValue.schedule(task, 1, TimeUnit.MILLISECONDS);
         Future<Integer> result = schedulerGetValue.schedule(task, new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
-
-        try {
-            Integer value = result.get();
-            System.out.println("Canal Getvalue = " + value);
-        } catch (InterruptedException | ExecutionException ex) {
-            ex.printStackTrace();
-        }
-        //schedulerGetValue.shutdown();
 
         return result;
     }
@@ -62,15 +52,10 @@ public class Canal implements ObserverAsync,CapteurAsync {
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            //System.out.println("Canal updated");
         };
-        //Schedule update task with delay entre 500ms-1500ms randomly
-        //Future<?> scheduleUpdate = schedulerUpdate.schedule(task, new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
-        Future<?> scheduleUpdate = schedulerUpdate.schedule(task, 1, TimeUnit.MILLISECONDS);
-        //schedulerUpdate.shutdown();
-
-        return scheduleUpdate;
-        //return executor.submit(task);
+        //Future<?> scheduleUpdate = schedulerUpdate.schedule(task, 1, TimeUnit.MILLISECONDS);
+        //return scheduleUpdate;
+        return executor.submit(task);
     }
 
 }

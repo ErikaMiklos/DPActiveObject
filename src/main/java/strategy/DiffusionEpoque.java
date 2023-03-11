@@ -27,9 +27,7 @@ public class DiffusionEpoque implements AlgoDiffusion {
         queue.take();
     }
     @Override
-    public void setValue() throws InterruptedException {
+    public void setValue(){
          ++value;
-        System.out.println("SetValue : " + value);
-        //queue.put(value);
     }
 }
