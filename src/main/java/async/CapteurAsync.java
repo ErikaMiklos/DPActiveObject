@@ -3,5 +3,5 @@ package async;
 import java.util.concurrent.Future;
 
 public interface CapteurAsync {
-    Future<Integer> getValue();
+    Future<Integer> getValue() throws InterruptedException;
 }

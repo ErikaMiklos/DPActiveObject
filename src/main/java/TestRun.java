@@ -21,6 +21,7 @@ public class TestRun {
     @BeforeEach
     void setup() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
+        //scheduler = Executors.newScheduledThreadPool(2);
     }
 
     @AfterEach
@@ -57,7 +58,7 @@ public class TestRun {
     @Test
     @DisplayName("DiffusionSequence")
     void diffusionSequence() throws InterruptedException {
-        sizeOfQueue = 5;
+        sizeOfQueue = 1;
         queue = new ArrayBlockingQueue<>(sizeOfQueue);
         algo = new DiffusionSequence();
         capteur = new CapteurImpl(queue, algo);
@@ -75,7 +76,7 @@ public class TestRun {
                     }
                 }, 0, 500, TimeUnit.MILLISECONDS);
         try {
-            sleep(6000);
+            sleep(8000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
