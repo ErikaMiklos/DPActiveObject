@@ -4,6 +4,7 @@ import observers.Observer;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
+import strategy.DiffusionEpoque;
 import strategy.DiffusionSequence;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class CapteurImpl implements Capteur {
             } else {
                 return queue.peek();
             }
+        } else if (algo.getClass().equals(DiffusionEpoque.class)) {
+            return value;
         } else {
             return value;
         }
