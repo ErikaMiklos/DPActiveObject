@@ -3,6 +3,8 @@ package observable;
 import observers.Observer;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
+import strategy.DiffusionAtomique;
+import strategy.DiffusionSequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +50,19 @@ public class CapteurImpl implements Capteur {
 
     @Override
     public int getValue() throws InterruptedException {
-        compteur++;
-        if (compteur == 4) {
-            compteur = 0;
-            return queue.take();
+
+        if(algo.getClass().equals(DiffusionAtomique.class) || algo.getClass().equals(DiffusionSequence.class)){
+            compteur++;
+            if (compteur == 4) {
+                compteur = 0;
+                return queue.take();
+            } else {
+                return queue.peek();
+            }
         } else {
-            return queue.peek();
+            return value;
         }
+
     }
 
     @Override
