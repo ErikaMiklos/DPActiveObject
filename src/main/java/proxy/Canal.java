@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 public class Canal implements ObserverAsync,CapteurAsync {
 
     private final Capteur capteurImpl;
-    private final Observer afficheur;
+    private final Afficheur afficheur;
     private final ScheduledExecutorService schedulerGetValue;
     private final ScheduledExecutorService schedulerUpdate;
     private final ExecutorService executor;
@@ -25,6 +25,10 @@ public class Canal implements ObserverAsync,CapteurAsync {
         this.schedulerGetValue = Executors.newSingleThreadScheduledExecutor();
         this.schedulerUpdate = Executors.newSingleThreadScheduledExecutor();
         this.executor = Executors.newSingleThreadExecutor();
+    }
+
+    public Afficheur getAfficheur() {
+        return afficheur;
     }
 
     @Override

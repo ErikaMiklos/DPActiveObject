@@ -24,9 +24,12 @@ public class DiffusionEpoque implements AlgoDiffusion {
         for(Canal c: capteur.getCanals()) {
             c.update(capteur);
         }
+        queue.take();
     }
     @Override
-    public void setValue() {
+    public void setValue() throws InterruptedException {
          ++value;
+        System.out.println("SetValue : " + value);
+        //queue.put(value);
     }
 }

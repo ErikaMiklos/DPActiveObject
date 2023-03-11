@@ -1,8 +1,11 @@
 import observable.CapteurImpl;
+import observers.Afficheur;
+import observers.Observer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import proxy.Canal;
 import strategy.AlgoDiffusion;
 import strategy.DiffusionAtomique;
 import strategy.DiffusionEpoque;
@@ -107,12 +110,17 @@ public class TestRun {
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     }
-                }, 500, 500, TimeUnit.MILLISECONDS);
+                }, 500, 700, TimeUnit.MILLISECONDS);
         try {
-            sleep(8000);
+            sleep(7000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        for (Canal c: capteur.getCanals()) {
+            System.out.println("Afficheur id " + c.getAfficheur().hashCode() + " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
+        }
+
     }
 }

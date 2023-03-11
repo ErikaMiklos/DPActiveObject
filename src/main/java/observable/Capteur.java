@@ -1,11 +1,12 @@
 package observable;
 
+import observers.Afficheur;
 import observers.Observer;
 
 import java.util.concurrent.ExecutionException;
 
 public interface Capteur {
-    void attache(Observer observer);
+    void attache(Afficheur afficheur);
 
     void detache(Observer observer);
 

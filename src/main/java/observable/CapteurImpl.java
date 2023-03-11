@@ -1,5 +1,6 @@
 package observable;
 
+import observers.Afficheur;
 import observers.Observer;
 import proxy.Canal;
 import strategy.AlgoDiffusion;
@@ -15,8 +16,8 @@ public class CapteurImpl implements Capteur {
     private int value = 0;
     private final List<Observer> observers;
     private final AlgoDiffusion algo;
-    private BlockingQueue<Integer> queue;
-    private List<Canal> canals;
+    private final BlockingQueue<Integer> queue;
+    private final List<Canal> canals;
     private int compteur = 0;
 
 
@@ -35,13 +36,9 @@ public class CapteurImpl implements Capteur {
         return canals;
     }
 
-    public List<Observer> getObservers() {
-        return observers;
-    }
-
     @Override
-    public void attache(Observer observer) {
-        observers.add(observer);
+    public void attache(Afficheur afficheur) {
+        observers.add(afficheur);
     }
 
     @Override
@@ -60,8 +57,6 @@ public class CapteurImpl implements Capteur {
             } else {
                 return queue.peek();
             }
-        } else if (algo.getClass().equals(DiffusionEpoque.class)) {
-            return value;
         } else {
             return value;
         }
@@ -74,7 +69,6 @@ public class CapteurImpl implements Capteur {
             ++value;
             algo.execute();
         }
-
     }
 
     public void setValue() throws InterruptedException {

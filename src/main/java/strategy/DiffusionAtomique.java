@@ -30,7 +30,7 @@ public class DiffusionAtomique implements AlgoDiffusion {
         }
     }
     @Override
-    public void setValue() {
+    public void setValue(){
          ++value;
     }
 }
