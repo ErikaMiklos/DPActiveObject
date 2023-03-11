@@ -11,12 +11,14 @@ import strategy.DiffusionAtomique;
 import strategy.DiffusionEpoque;
 import strategy.DiffusionSequence;
 
+import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.*;
 
 import static java.lang.Thread.sleep;
 
 public class TestRun {
-    private int sizeOfQueue;
+    private static final int QUEUE_CAPACITY = 1;
     private AlgoDiffusion algo;
     private CapteurImpl capteur;
     private ScheduledExecutorService scheduler;
@@ -25,27 +27,22 @@ public class TestRun {
     @BeforeEach
     void setup() {
         scheduler = Executors.newScheduledThreadPool(2);
+        queue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
     }
-
-    @AfterEach
-    void stopThread() {}
 
     @Test
     @DisplayName("DiffusionAtomique")
     void diffusionAtomique() throws InterruptedException {
-        sizeOfQueue = 1;
-        queue = new ArrayBlockingQueue<>(sizeOfQueue);
+
         algo = new DiffusionAtomique();
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
-        System.out.println("DiffusionAtomique travaille.....");
+        System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        //System.out.println("setValue");
                         capteur.setValue();
-                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -70,19 +67,16 @@ public class TestRun {
     @Test
     @DisplayName("DiffusionSequence")
     void diffusionSequence() throws InterruptedException {
-        sizeOfQueue = 1;
-        queue = new ArrayBlockingQueue<>(sizeOfQueue);
+
         algo = new DiffusionSequence();
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
-        System.out.println("DiffusionSéquence travaille.....");
+        System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        //System.out.println("setValue");
                         capteur.setValue();
-                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
@@ -106,28 +100,25 @@ public class TestRun {
     @Test
     @DisplayName("DiffusionEpoque")
     void diffusionEpoque() throws InterruptedException {
-        sizeOfQueue = 1;
-        queue = new ArrayBlockingQueue<>(sizeOfQueue);
+
         algo = new DiffusionEpoque();
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
-        System.out.println("DiffusionEpoque travaille.....");
+        System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
-                        //System.out.println("setValue");
                         capteur.setValue();
-                        //System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     }
-                }, 500, 800, TimeUnit.MILLISECONDS);
+                }, 500, 900, TimeUnit.MILLISECONDS);
         try {
-            sleep(7000);
+            sleep(8000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -140,4 +131,52 @@ public class TestRun {
         }
 
     }
+
+    @Test
+    @DisplayName("DiffusionRandom")
+    void diffusionRandom() throws InterruptedException {
+        HashMap<Integer, AlgoDiffusion> map = new HashMap<>();
+        map.put(1, new DiffusionAtomique());
+        map.put(2, new DiffusionSequence());
+        map.put(3, new DiffusionEpoque());
+        Random random = new Random();
+        int select = random.nextInt(4);
+
+        algo = map.get(select);
+        capteur = new CapteurImpl(queue, algo);
+        algo.configure(queue, capteur);
+        int period;
+        if(select == 3) {
+            period = 900;
+        }else {
+            period = 500;
+        }
+
+        System.out.println(map.get(select).toString() + " travaille pendant 8s, attendez svp ....");
+        ScheduledFuture<?> future =
+                scheduler.scheduleAtFixedRate(() -> {
+                    try {
+                        capteur.setValue();
+                        capteur.tick();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, 500, period, TimeUnit.MILLISECONDS);
+        try {
+            sleep(8000);
+            future.cancel(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("La Résultat:");
+        for (Canal c: capteur.getCanals()) {
+            System.out.println("Afficheur id " + c.getAfficheur().hashCode() +
+                    " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
+        }
+
+    }
+
 }
