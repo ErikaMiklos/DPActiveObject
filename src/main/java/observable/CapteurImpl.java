@@ -67,5 +67,9 @@ public class CapteurImpl implements Capteur {
 
     }
 
+    public void setValue() throws InterruptedException {
+        algo.setValue();
+    }
+
 
 }

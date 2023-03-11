@@ -11,4 +11,5 @@ import java.util.concurrent.ExecutionException;
 public interface AlgoDiffusion {
     void configure(BlockingQueue<Integer> queue, CapteurImpl capteur) throws InterruptedException;
     void execute() throws InterruptedException, ExecutionException;
+    void setValue() throws InterruptedException;
 }

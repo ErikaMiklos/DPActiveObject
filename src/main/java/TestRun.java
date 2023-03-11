@@ -16,12 +16,14 @@ public class TestRun {
     private AlgoDiffusion algo;
     private CapteurImpl capteur;
     private ScheduledExecutorService scheduler;
+    private ScheduledExecutorService schedulerSetValue;
     private BlockingQueue<Integer> queue;
 
     @BeforeEach
     void setup() {
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        //scheduler = Executors.newScheduledThreadPool(2);
+        //scheduler = Executors.newSingleThreadScheduledExecutor();
+        //schedulerSetValue = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newScheduledThreadPool(2);
     }
 
     @AfterEach
@@ -39,6 +41,8 @@ public class TestRun {
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
+                        System.out.println("setValue");
+                        capteur.setValue();
                         System.out.println("tick");
                         capteur.tick();
                     } catch (InterruptedException e) {
@@ -46,7 +50,7 @@ public class TestRun {
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     }
-                }, 0, 500, TimeUnit.MILLISECONDS);
+                }, 500, 500, TimeUnit.MILLISECONDS);
         try {
             sleep(8000);
             future.cancel(true);
@@ -67,19 +71,21 @@ public class TestRun {
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
+                        System.out.println("setValue");
+                        capteur.setValue();
                         System.out.println("tick");
                         capteur.tick();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
                     }
-                }, 0, 500, TimeUnit.MILLISECONDS);
+                }, 500, 500, TimeUnit.MILLISECONDS);
         try {
             sleep(8000);
             future.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
     }
 }

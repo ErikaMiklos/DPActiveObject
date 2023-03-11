@@ -20,22 +20,27 @@ public class DiffusionSequence implements AlgoDiffusion {
         this.capteur = capteur;
         this.copy = queue;
         this.originList = new LinkedList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 100; i++) {
             originList.add(i);
         }
     }
 
     @Override
     public void execute() throws InterruptedException {
-        originList.remove();
+
         if(originList.peek() != null){
             copy.put(originList.peek());
         }
         originList.remove();
-
         for(Canal c: capteur.getCanals()) {
             c.update(capteur);
         }
+    }
+
+    @Override
+    public void setValue(){
+        originList.remove();
+
     }
 
 }
