@@ -66,7 +66,7 @@ public class CapteurImpl implements Capteur {
 
     /**
      * Methode pour détacher un afficheur
-     * @param afficheur: observer de Capteur
+     * @param afficheur: observeur de Capteur
      */
     @Override
     public void detache(Afficheur afficheur) {
@@ -77,7 +77,7 @@ public class CapteurImpl implements Capteur {
      * Concernant la diffusion atomique et diffusion séquentielle la valeur
      * est lu de la BlockingQueue, qui est blocké et déblocké périodiquement.
      * Concernant la diffusion époque, elle récupère la valeur actuelle
-     * de la capteur, ici il y a pas de blockage.
+     * de la capteur, ici il n'y a pas de blockage.
      * @return value
      */
     @Override

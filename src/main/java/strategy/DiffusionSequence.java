@@ -37,12 +37,14 @@ public class DiffusionSequence implements AlgoDiffusion {
         }
     }
     /**
-     * Méthode d'execution principale bloquant l'écriture sur le capteur et faisant appel
-     * à la méthode update de tous les canaux.
+     * Méthode d'execution principale bloquant [méthode put()]
+     * l'écriture sur le capteur et faisant appel à la méthode
+     * update de tous les canaux.
      */
     @Override
     public void execute() throws InterruptedException {
-
+        //la valeur <<head>> d'OriginListe est copié dans le BlockingQueue
+        //afin de le transferer au CapteurImpl
         if(originList.peek() != null){
             copy.put(originList.peek());
         }
@@ -52,11 +54,13 @@ public class DiffusionSequence implements AlgoDiffusion {
         }
     }
     /**
-     * Méthode pour incrémenter la valeur de maniére non-blockant.
+     * Méthode qui permets d'incrémenter la valeur en la tirant
+     * de Queue d'originliste.
      */
     @Override
     public void setValue(){
         originList.remove();
+        System.out.println("SetValue: "+ originList.peek());
 
     }
 

@@ -1,4 +1,5 @@
 import observable.CapteurImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,11 @@ public class TestRun {
     void setup() {
         scheduler = Executors.newScheduledThreadPool(2);
         queue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+    }
+
+    @AfterEach
+    void stopThread() {
+        scheduler.shutdownNow();
     }
 
     @Test
