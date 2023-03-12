@@ -5,9 +5,12 @@ import observable.Capteur;
 import observers.Afficheur;
 import async.ObserverAsync;
 import org.jetbrains.annotations.NotNull;
+import strategy.DiffusionAtomique;
 
 import java.util.Random;
 import java.util.concurrent.*;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Le canal est l'intermedaire entre le capteur et l'afficheur,
@@ -51,6 +54,7 @@ public class Canal implements ObserverAsync,CapteurAsync {
      */
     @Override
     public Future<Integer> getValue(){
+        int randomDelay = new Random().nextInt(1000) + 501;
         //Create a new Callable to perform the task
         Callable<Integer> task = new Callable<Integer>() {
             public Integer call() throws ExecutionException, InterruptedException {
@@ -59,7 +63,14 @@ public class Canal implements ObserverAsync,CapteurAsync {
             }
         };
         Future<Integer> result = schedulerGetValue.schedule(task,
-                new Random().nextInt(1000) + 500, TimeUnit.MILLISECONDS);
+                randomDelay, TimeUnit.MILLISECONDS);
+        try {
+            //return la value avec décalage aléatoire
+            sleep(randomDelay);
+            //System.out.println("Value returned: " +result.get() + " avec sleep " + random + "ms");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return result;
     }
