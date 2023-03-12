@@ -32,7 +32,7 @@ public class DiffusionSequence implements AlgoDiffusion {
         this.capteur = capteur;
         this.copy = queue;
         this.originList = new LinkedList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 6; i++) {
             originList.add(i);
         }
     }
@@ -48,7 +48,6 @@ public class DiffusionSequence implements AlgoDiffusion {
         if(originList.peek() != null){
             copy.put(originList.peek());
         }
-        originList.remove();
         for(Canal c: capteur.getCanals()) {
             c.update(capteur);
         }
@@ -59,9 +58,9 @@ public class DiffusionSequence implements AlgoDiffusion {
      */
     @Override
     public void setValue(){
-        originList.remove();
-        System.out.println("SetValue: "+ originList.peek());
-
+        if(!originList.isEmpty()) {
+            originList.remove();
+        }
     }
 
 }

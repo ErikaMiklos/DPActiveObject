@@ -76,10 +76,19 @@ public class TestRun {
         algo.configure(queue, capteur);
 
         System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
-        ScheduledFuture<?> future =
+
+        ScheduledFuture<?> futureValue =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
                         capteur.setValue();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }, 200, 400, TimeUnit.MILLISECONDS);
+
+        ScheduledFuture<?> futureTick =
+                scheduler.scheduleAtFixedRate(() -> {
+                    try {
                         capteur.tick();
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
@@ -87,7 +96,8 @@ public class TestRun {
                 }, 500, 500, TimeUnit.MILLISECONDS);
         try {
             sleep(8000);
-            future.cancel(true);
+            futureValue.cancel(true);
+            futureTick.cancel(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
