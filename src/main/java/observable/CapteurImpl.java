@@ -105,7 +105,7 @@ public class CapteurImpl implements Capteur {
      */
     @Override
     public void tick() throws InterruptedException, ExecutionException {
-        if(value < 6) {
+        if(value < 5) {
             ++value;
             algo.execute();
         }

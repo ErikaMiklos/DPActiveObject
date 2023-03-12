@@ -37,7 +37,7 @@ public class Afficheur implements Observer {
         Future<Integer> futureValue = canal.getValue();
         Integer updatedValue = futureValue.get();
 
-        if(updatedValue<6 && (afficheListe.isEmpty() || afficheListe.get(afficheListe.size()-1)<updatedValue)) {
+        if(afficheListe.isEmpty() || afficheListe.get(afficheListe.size()-1) < updatedValue) {
             afficheListe.add(updatedValue);
         }
     }
