@@ -41,7 +41,7 @@ public class TestRun {
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
-        System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
+        System.out.println("DiffusionAtomique travaille pendant 8s, attendez svp ....");
         ScheduledFuture<?> future =
                 scheduler.scheduleAtFixedRate(() -> {
                     try {
@@ -75,7 +75,7 @@ public class TestRun {
         capteur = new CapteurImpl(queue, algo);
         algo.configure(queue, capteur);
 
-        System.out.println("DiffusionEpoque travaille pendant 8s, attendez svp ....");
+        System.out.println("DiffusionSequence travaille pendant 8s, attendez svp ....");
 
         ScheduledFuture<?> futureValue =
                 scheduler.scheduleAtFixedRate(() -> {
@@ -148,46 +148,15 @@ public class TestRun {
     @Test
     @DisplayName("DiffusionRandom")
     void diffusionRandom() throws InterruptedException {
-        HashMap<Integer, AlgoDiffusion> map = new HashMap<>();
-        map.put(1, new DiffusionAtomique());
-        map.put(2, new DiffusionSequence());
-        map.put(3, new DiffusionEpoque());
-        Random random = new Random();
-        int select = random.nextInt(3)+1;
 
-        algo = map.get(select);
-        capteur = new CapteurImpl(queue, algo);
-        algo.configure(queue, capteur);
-        int period;
-        if(select == 3) {
-            period = 900;
-        }else {
-            period = 500;
-        }
-
-        System.out.println(map.get(select).toString() + " travaille pendant 8s, attendez svp ....");
-        ScheduledFuture<?> future =
-                scheduler.scheduleAtFixedRate(() -> {
-                    try {
-                        capteur.setValue();
-                        capteur.tick();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-                }, 500, period, TimeUnit.MILLISECONDS);
-        try {
-            sleep(8000);
-            future.cancel(true);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("La Résultat:");
-        for (Canal c: capteur.getCanals()) {
-            System.out.println("Afficheur id " + c.getAfficheur().hashCode() +
-                    " : Liste des valeurs récupérées: " + c.getAfficheur().getAfficheListe());
+        int r = new Random().nextInt(3);
+        switch (r) {
+            case 0:
+                diffusionAtomique(); break;
+            case 1:
+                diffusionSequence(); break;
+            case 2:
+                diffusionEpoque(); break;
         }
 
     }
