@@ -12,6 +12,7 @@ import strategy.DiffusionSequence;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 
@@ -173,6 +174,8 @@ public class TestRun {
                 diffusionSequence(); break;
             case 2:
                 diffusionEpoque(); break;
+            default :
+                Logger.getGlobal().info("C'est la faute de chatGPT, pas la mienne!!!");
         }
 
     }
