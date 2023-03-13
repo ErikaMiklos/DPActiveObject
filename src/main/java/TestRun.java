@@ -67,6 +67,12 @@ public class TestRun {
         }
     }
 
+    /**
+     * Pour que l'algorithme fonctionne correctement, deux thread indépendants
+     * doivent être lancés simultanement. Un thread didié à incrémenter la valeur
+     * sans cesse avec certain périodicité (setValue). L'autre fait la mise à jour,
+     * mais il est blocqué de temps en temps (tick).
+     */
     @Test
     @DisplayName("DiffusionSequence")
     void diffusionSequence() throws InterruptedException {
@@ -110,6 +116,16 @@ public class TestRun {
 
     }
 
+    /**
+     * Il y a pas de blockage dans ce procedure. Même l'incrémetation de
+     * la valeur, même la mise à jour se déroulent avec certain périodicité
+     * sans cesse. Par contre la périodicité est important. Si cette valeur est
+     * égale ou très proche à 1500ms, tous les afficheurs récupérent tous
+     * les valeur (1,2,3,4,5), similairement d'algo atomique. Par contre,
+     * si la périodicité est trop petit (500ms), les afficheurs perdent
+     * beaucoup des valeurs, car les valeurs changent trop vite. Alors
+     * la périodicité idéale c'est trouve au millieu de 500-1500 ms.
+     */
     @Test
     @DisplayName("DiffusionEpoque")
     void diffusionEpoque() throws InterruptedException {

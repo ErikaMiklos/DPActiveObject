@@ -48,8 +48,18 @@ public class Canal implements ObserverAsync,CapteurAsync {
     }
 
     /**
-     * Cette méthode crée une classe getValue à l'aide d'un callable qui est ensuite utilisé
-     * par le scheduler avec des délais d'initialisation allant de 500 à 1500 pour simuler le réseau.
+     * Cette méthode crée une méthode invocation type callable, ce qui
+     * return une value Future. Ce méthode appelle la méthode getValue() de
+     * la classe capteurImpl avec décalage random (entre 501-1499ms), qui permets
+     * que les différents canaux récoivent différents valeurs selon le décalage,
+     * concernant l'algo époque. Concernant l'algo atomique et l'algo séquence ce
+     * décalage n'influence pas le résultat, car la valeur à récuperer rest la
+     * même tant que tous les canaux ne l'ont pas reçue.
+     * La retour de la valeur est décalé également aléatoirement (entre 501-1499ms).
+     * Dans le cas d'algo époque ce deuxieme décalage permets de stimuler la situation
+     * où un chiffre n'arrive pas dans le bon ordre, par exemple 1 arrive plus tard que 2.
+     * Puis, remettre les valeurs en bon ordre se fait dans la class Afficheur.
+     * Concernant les autre algos, ce deuxieme décalage n'influence pas la fonctionnement.
      * @return Future<Integer>
      */
     @Override

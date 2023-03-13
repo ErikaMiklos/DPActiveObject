@@ -13,6 +13,9 @@ import java.util.concurrent.Future;
  * celui qui transfère la valeur actuel du Capteur via la méthode getValue().
  * La valeur arrive en tant que Future et en appellant le get() méthode
  * elle mets la Future en statut complété (isDone=true).
+ * Les valeurs arrivé sont filtré, afin de respecter le bon ordre. Si la valeur
+ * actuelle est inférieure à la valeur reçue précédemment, alors
+ * elle ne sera pas prise en compte.
  */
 public class Afficheur implements Observer {
     /**
